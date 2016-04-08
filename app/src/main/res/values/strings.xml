@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ProjectileMandate</string>
+    <string name="play_button">Start</string>
+    <string name="options_button">Options</string>
+    <string name="leader_board_button">Leader Board</string>
+    <string name="quit_button">Exit</string>
+    <string name="color_scheme">Color Scheme</string>
+    <string name="light_button">Light</string>
+    <string name="dark_button">Dark</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="easy_button">Easy</string>
+    <string name="hard_button">Hard</string>
+</resources>
