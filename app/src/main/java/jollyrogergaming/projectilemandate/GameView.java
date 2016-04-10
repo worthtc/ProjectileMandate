@@ -27,20 +27,6 @@ public class GameView extends View {
 
     private House[] houses = new House[4];
 
-    private class House {
-        private float houseX, houseY;
-        private boolean active;
-
-        public House(float x, float y) {
-            this.houseX = x;
-            this.houseY = y;
-            this.active = true;
-        }
-
-        public void draw(Canvas canvas, Paint paint) {
-            canvas.drawRect(this.houseX, this.houseY, this.houseX + 100, this.houseY + 30, paint);
-        }
-    };
 
     int x ;
     int y ;
@@ -81,6 +67,7 @@ public class GameView extends View {
         Missile new_missile = new Missile(n,1010,32,32,10);
         missilemove.add(new_missile);
     }
+
     // Android calls this to redraw the view, after invalidate()
     @Override
     protected void onDraw(Canvas canvas)    {
@@ -91,6 +78,10 @@ public class GameView extends View {
         canvas.drawARGB(255, 88, 42, 114);
 
         //Draw a circle at user touch
+        mPaint.setColor(0xFFFFFFFF);
+        canvas.drawCircle(mTouchX, mTouchY, 50, mPaint);
+
+
         mPaint.setColor(0xFF000000);
         canvas.drawRect(this.getWidth()/2 - 7, 610, this.getWidth() / 2 + 7, 660, mPaint);
 
@@ -100,6 +91,7 @@ public class GameView extends View {
         mPaint.setColor(0xFF00FF00);
         canvas.drawRect(0, this.getHeight() * 9 / 10, this.getWidth(), this.getHeight(), mPaint);
 
+        // Draws houses
         mPaint.setColor(0xFFFF0000);
         for(int i=0; i<houses.length; i++) {
             if(houses[i].active) {
@@ -107,12 +99,10 @@ public class GameView extends View {
             }
         }
 
-        mPaint.setColor(0xFFFFFFFF);
-        canvas.drawCircle(mTouchX, mTouchY, 50, mPaint);
+        // Draws missiles
         for(Missile m : missile) {
             mPaint.setColor(0xFF00FF00);
-            canvas.drawRect(x,y,32,32,mPaint);
-
+            canvas.drawRect(x, y, 32, 32, mPaint);
         }
         for (Missile m2 : missilemove){
             mPaint.setColor(0xFF00FF00);
@@ -121,7 +111,6 @@ public class GameView extends View {
         for(Missile m : missilen) {
             mPaint.setColor(0xFF00FF00);
             canvas.drawRect(m.getRectF(),mPaint);
-
         }
 
         //Log.d(TAG, "onSensorChanged() " + mLightLevel);
@@ -156,6 +145,22 @@ public class GameView extends View {
         }
         return true;
     }
+
+    // House object
+    private class House {
+        private float houseX, houseY;
+        private boolean active;
+
+        public House(float x, float y) {
+            this.houseX = x;
+            this.houseY = y;
+            this.active = true;
+        }
+
+        public void draw(Canvas canvas, Paint paint) {
+            canvas.drawRect(this.houseX, this.houseY, this.houseX + 100, this.houseY + 30, paint);
+        }
+    };
 
 
 }
