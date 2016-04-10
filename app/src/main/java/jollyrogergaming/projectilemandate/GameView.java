@@ -49,25 +49,13 @@ public class GameView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         PointF current = new PointF(event.getX(), event.getY());
         String action = "";
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                action = "ACTION_DOWN";
-                mTouchX = (int)current.x;
-                mTouchY = (int)current.y;
-                Log.i(TAG, action + " at x =" + current.x + ", y =" + current.y);
-                Log.i(TAG, "x = " + mTouchX + ", y = " + mTouchY);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                action = "ACTION_MOVE";
-                break;
-            case MotionEvent.ACTION_UP:
-                action = "ACTION_UP";
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                action = "ACTION_CANCEL";
-                break;
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            action = "ACTION_DOWN";
+            mTouchX = (int) current.x;
+            mTouchY = (int) current.y;
+            //Log.i(TAG, action + " at x =" + current.x + ", y =" + current.y);
+            //Log.i(TAG, "x = " + mTouchX + ", y = " + mTouchY);
         }
-        //Log.i(TAG, action + " at x =" + current.x + ", y =" + current.y);
         return true;
     }
 

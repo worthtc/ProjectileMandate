@@ -2,6 +2,7 @@ package jollyrogergaming.projectilemandate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -34,6 +37,9 @@ public class GameActivity extends AppCompatActivity {
     private static final String TAG = "GameActivity";
 
     GameView mGameView;
+    Timer mTimer;
+    TimerTask mTimerTask;
+    Handler mHandler = new Handler();
 
 
     @Override
@@ -65,6 +71,34 @@ public class GameActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
 
+    }
+
+    @Override
+    public void onResume() {
+        // Create the timer and its task.
+        mTimer = new Timer();
+        mTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+
+                // **CALL CALCULATIONS FOR GAME OBJECTS HERE**
+
+                // The handler will tell the background thread to redraw the view.
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mGameView.invalidate();
+                    }
+                });
+            }
+        };
+
+        // Assign the task to the timer.
+        mTimer.schedule(mTimerTask,
+                10,     // delay (ms) before task is to be executed
+                10);    // time (ms) between successive task executions
+
+        super.onResume();
     }
 
 
