@@ -3,6 +3,7 @@ package jollyrogergaming.projectilemandate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,10 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         mColorScheme = getIntent().getBooleanExtra(EXTRA_COLOR_SCHEME, false);
         mIsGameHard = getIntent().getBooleanExtra(EXTRA_IS_GAME_HARD, false);
+
+        //Hide the action bar since this is the game window
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         mTestTextOne = (TextView) findViewById(R.id.text_one);
         mTestTextOne.setText("ColorScheme: " + mColorScheme);
