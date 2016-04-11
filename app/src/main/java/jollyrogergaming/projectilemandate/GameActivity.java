@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -42,6 +43,7 @@ public class GameActivity extends AppCompatActivity {
     Timer mTimer;
     TimerTask mTimerTask;
     Handler mHandler = new Handler();
+    TextView mTextView;
 
 
     @Override
@@ -58,6 +60,8 @@ public class GameActivity extends AppCompatActivity {
         //Main screen
         FrameLayout mainView = (FrameLayout) findViewById(R.id.game_view);
         FragmentManager manager = getSupportFragmentManager();
+
+
         //TopScoreFragment dialog = TopScoreFragment.newInstance(5);
        // dialog.show(manager, DIALOG_TOP_SCORE);
 
@@ -65,6 +69,11 @@ public class GameActivity extends AppCompatActivity {
 
         mGameView = new jollyrogergaming.projectilemandate.GameView(this);
         mainView.addView(mGameView);
+
+        mTextView = new TextView(this);
+        mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+        mTextView.setTextSize(24);
+        mainView.addView(mTextView);
 
 //        mTestTextOne = (TextView) findViewById(R.id.text_one);
 //        mTestTextOne.setText("ColorScheme: " + mColorScheme);
@@ -105,6 +114,10 @@ public class GameActivity extends AppCompatActivity {
                 10);    // time (ms) between successive task executions
 
         super.onResume();
+    }
+
+    public void displayScore(){
+        mTextView.setText("Score: " );
     }
 
 

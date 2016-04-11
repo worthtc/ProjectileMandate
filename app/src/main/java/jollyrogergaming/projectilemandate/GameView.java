@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -82,6 +83,8 @@ public class GameView extends View {
             createMissile();
             moveMissile();
         }
+
+
     }
 
     public void createMissile(){
@@ -112,6 +115,8 @@ public class GameView extends View {
         //Draw a circle at user touch
 //        mPaint.setColor(0xFFFFFFFF);
 //        canvas.drawCircle(mTouchX, mTouchY, 50, mPaint);
+
+        ;
 
 
         mPaint.setColor(0xFF000000);
@@ -194,20 +199,6 @@ public class GameView extends View {
                 p.calcNewPos();
                 //Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
             }
-        }
-
-        // Draws missiles
-        for(Missile m : missile) {
-            mPaint.setColor(0xFF00FF00);
-            canvas.drawRect(x, y, 32, 32, mPaint);
-        }
-        for (Missile m2 : missilemove){
-            mPaint.setColor(0xFF00FF00);
-            canvas.drawRect(x,y,32,32,mPaint);
-        }
-        for(Missile m : missilen) {
-            mPaint.setColor(0xFF00FF00);
-            canvas.drawRect(m.getRectF(),mPaint);
         }
 
         //Log.d(TAG, "onSensorChanged() " + mLightLevel);
@@ -297,4 +288,7 @@ public class GameView extends View {
         return (int)(Math.random() * range) + min;
     }
 
+    public int getScore() {
+        return mScore;
+    }
 }
