@@ -77,6 +77,8 @@ public class GameFragment extends Fragment {
         FrameLayout mainView = (FrameLayout) view.findViewById(R.id.game_view);
 
 
+
+
         // Create the game view and add it to the game screen.
         mGameView = new GameView(getContext());
         mainView.addView(mGameView);

@@ -44,6 +44,7 @@ public class GameView extends View {
     private static final int HOUSE_WIDTH = 100;
     private boolean mIsGameOver;
 
+
     // For the toast, can remove later
     private Context mContext;
 
@@ -70,16 +71,16 @@ public class GameView extends View {
 
     public GameView(Context context, AttributeSet attrs){
         super(context, attrs);
-        houses[0] = new House(80, 650);
-        houses[1] = new House(350, 650);
-        houses[2] = new House(740, 650);
-        houses[3] = new House(1010, 650);
+        houses[0] = new House(0, 0);
+        houses[1] = new House(0, 0);
+        houses[2] = new House(0, 0);
+        houses[3] = new House(0, 0);
         mMaxProjectiles = 2;
         mProjectiles = new ArrayList<Projectile>();
         mMissiles = new ArrayList<Projectile>();
         mExplosionRadius = 50;
         mProjectileSize = 20;
-        mMissileFrequency = 300;
+        mMissileFrequency = 40;
         mMissileCountdown = 20;
         mMissileSize = 15;
         mMissileSpeed = 6;
@@ -116,10 +117,16 @@ public class GameView extends View {
         super.onDraw(canvas);
         mScreenWidth = this.getWidth();
         mGroundHeight = this.getHeight() * 9 / 10;
+
+        // This should probably be done outside of the game loop somewhere
         houses[0].setHouseY(mGroundHeight);
         houses[1].setHouseY(mGroundHeight);
         houses[2].setHouseY(mGroundHeight);
         houses[3].setHouseY(mGroundHeight);
+        houses[0].setHouseX(((mScreenWidth/5) * 1) - (HOUSE_WIDTH/2));
+        houses[1].setHouseX(((mScreenWidth/5) * 2) - (HOUSE_WIDTH/2));
+        houses[2].setHouseX(((mScreenWidth/5) * 3) - (HOUSE_WIDTH/2));
+        houses[3].setHouseX(((mScreenWidth/5) * 4) - (HOUSE_WIDTH/2));
         //Log.d(TAG, "onDraw(); X = " + mX + " Y = " + mY);
 
         //Draw background, feel free to delete or change color. Here just in case we want a background color.
@@ -294,6 +301,9 @@ public class GameView extends View {
 
         public void setHouseY(int y){
             houseY = y;
+        }
+        public void setHouseX(int x){
+            houseX = x;
         }
     };
 
