@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -24,6 +25,8 @@ public class GameView extends View {
     private static final String TAG = "GameActivity";
     private int mTouchX;
     private int mTouchY;
+    private ArrayList<Projectile> mProjectiles;
+    private int mMaxProjectiles;
 
     private House[] houses = new House[4];
 
@@ -51,6 +54,8 @@ public class GameView extends View {
         houses[1] = new House(350, 650);
         houses[2] = new House(740, 650);
         houses[3] = new House(1010, 650);
+        mMaxProjectiles = 2;
+        mProjectiles = new ArrayList<Projectile>();
 
         for(int i = 0; i < 100 ; i++) {
             createMissile();
@@ -78,8 +83,8 @@ public class GameView extends View {
         canvas.drawARGB(255, 88, 42, 114);
 
         //Draw a circle at user touch
-        mPaint.setColor(0xFFFFFFFF);
-        canvas.drawCircle(mTouchX, mTouchY, 50, mPaint);
+//        mPaint.setColor(0xFFFFFFFF);
+//        canvas.drawCircle(mTouchX, mTouchY, 50, mPaint);
 
 
         mPaint.setColor(0xFF000000);
@@ -96,6 +101,28 @@ public class GameView extends View {
         for(int i=0; i<houses.length; i++) {
             if(houses[i].active) {
                 houses[i].draw(canvas, mPaint);
+            }
+        }
+
+        // Draw player projectiles and explosions
+        for (Iterator<Projectile> iterator = mProjectiles.iterator(); iterator.hasNext();) {
+            Projectile p = iterator.next();
+            if(p.checkArrived()){
+                Log.i(TAG, "ARRIVED");
+                mPaint.setColor(0xFFFFFFFF);
+                canvas.drawCircle(p.getDestx(), p.getDesty(), 50, mPaint);
+                if(p.getExplosionLifetime() <= 0) {
+                    iterator.remove();
+                }else{
+                    p.setExplosionLifetime(p.getExplosionLifetime() - 1);
+                }
+
+            }else {
+                mPaint.setColor(0xFFFFFFFF);
+                //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
+                canvas.drawCircle(p.getX_pos(), p.getY_pos(), 20, mPaint);
+                p.calcNewPos();
+                Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
             }
         }
 
@@ -142,6 +169,9 @@ public class GameView extends View {
             mTouchY = (int) current.y;
             //Log.i(TAG, action + " at x =" + current.x + ", y =" + current.y);
             //Log.i(TAG, "x = " + mTouchX + ", y = " + mTouchY);
+            if (mProjectiles.size() < mMaxProjectiles) {
+                mProjectiles.add(new Projectile(0, 0, mTouchX, mTouchY));
+            }
         }
         return true;
     }
