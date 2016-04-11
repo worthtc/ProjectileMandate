@@ -80,7 +80,7 @@ public class GameView extends View {
         mMissiles = new ArrayList<Projectile>();
         mExplosionRadius = 50;
         mProjectileSize = 20;
-        mMissileFrequency = 40;
+        mMissileFrequency = 200;
         mMissileCountdown = 20;
         mMissileSize = 15;
         mMissileSpeed = 6;
@@ -197,7 +197,7 @@ public class GameView extends View {
 
         // Creates new missiles every mMissileFrequency frames
         if (mMissileCountdown <= 0){
-            if(mMissileFrequency > 40) {
+            if(mMissileFrequency > 5) {
                 mMissileFrequency -= 2;
             }
             mMissileCountdown = mMissileFrequency;
