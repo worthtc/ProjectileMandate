@@ -12,7 +12,7 @@ public class Projectile {
     private int explosionLifetime;
 
     public Projectile(int x, int y, int x2, int y2){
-        speed = 8;
+        speed = 5;
         x_pos = x;
         y_pos = y;
         destx = x2;

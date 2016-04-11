@@ -34,6 +34,9 @@ public class GameView extends View {
     private int mMissileCountdown;
     private int mMissileSize;
     private int mGroundHeight;
+    private int mScreenWidth;
+    private int mMissileSpeed;
+    private int mProjectileSpeed;
 
     private House[] houses = new House[4];
 
@@ -69,6 +72,8 @@ public class GameView extends View {
         mMissileFrequency = 300;
         mMissileCountdown = 20;
         mMissileSize = 15;
+        mMissileSpeed = 6;
+        mProjectileSpeed = 10;
 
         for(int i = 0; i < 100 ; i++) {
             createMissile();
@@ -90,6 +95,7 @@ public class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas)    {
         super.onDraw(canvas);
+        mScreenWidth = this.getWidth();
         mGroundHeight = this.getHeight() * 9 / 10;
         houses[0].setHouseY(mGroundHeight);
         houses[1].setHouseY(mGroundHeight);
@@ -143,13 +149,15 @@ public class GameView extends View {
             }
         }
 
+
+
         // Creates new missiles every mMissileFrequency frames
         if (mMissileCountdown <= 0){
             if(mMissileFrequency > 40) {
                 mMissileFrequency -= 2;
             }
             mMissileCountdown = mMissileFrequency;
-            mMissiles.add(new Projectile(0, 0, 1500, 1500, 3));
+            mMissiles.add(new Projectile(randomWithRange(0, mScreenWidth), 0, randomWithRange(0, mScreenWidth), mGroundHeight, mMissileSpeed));
         }
         // Counts down by 1 every frame
         mMissileCountdown -= 1;
@@ -162,7 +170,7 @@ public class GameView extends View {
                 iterator.remove();
                 // **Check Collision with houses here**
             }else {
-                mPaint.setColor(0xFF555555);
+                mPaint.setColor(0xFFFFA500);
                 //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mMissileSize, mPaint);
                 p.calcNewPos();
@@ -214,7 +222,7 @@ public class GameView extends View {
             //Log.i(TAG, action + " at x =" + current.x + ", y =" + current.y);
             //Log.i(TAG, "x = " + mTouchX + ", y = " + mTouchY);
             if (mProjectiles.size() < mMaxProjectiles) {
-                mProjectiles.add(new Projectile(this.getWidth() / 2, mGroundHeight, mTouchX, mTouchY));
+                mProjectiles.add(new Projectile(this.getWidth() / 2, mGroundHeight, mTouchX, mTouchY, mProjectileSpeed));
             }
         }
         return true;
@@ -265,6 +273,10 @@ public class GameView extends View {
 
     }
      */
-
+    int randomWithRange(int min, int max)
+    {
+        int range = (max - min) + 1;
+        return (int)(Math.random() * range) + min;
+    }
 
 }
