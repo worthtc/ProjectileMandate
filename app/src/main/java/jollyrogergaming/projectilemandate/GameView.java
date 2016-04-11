@@ -26,12 +26,21 @@ public class GameView extends View {
     private int mTouchX;
     private int mTouchY;
     private ArrayList<Projectile> mProjectiles;
+    private ArrayList<Projectile> mMissiles;
     private int mMaxProjectiles;
     private int mExplosionRadius;
     private int mProjectileSize;
+    private int mMissileFrequency;
+    private int mMissileCountdown;
+    private int mMissileSize;
     private int mGroundHeight;
+    private int mScreenWidth;
+    private int mMissileSpeed;
+    private int mProjectileSpeed;
+    private int mScore;
 
     private House[] houses = new House[4];
+
 
 
     int x ;
@@ -59,8 +68,15 @@ public class GameView extends View {
         houses[3] = new House(1010, 650);
         mMaxProjectiles = 2;
         mProjectiles = new ArrayList<Projectile>();
+        mMissiles = new ArrayList<Projectile>();
         mExplosionRadius = 50;
         mProjectileSize = 20;
+        mMissileFrequency = 300;
+        mMissileCountdown = 20;
+        mMissileSize = 15;
+        mMissileSpeed = 6;
+        mProjectileSpeed = 10;
+        mScore = 0;
 
         for(int i = 0; i < 100 ; i++) {
             createMissile();
@@ -82,6 +98,7 @@ public class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas)    {
         super.onDraw(canvas);
+        mScreenWidth = this.getWidth();
         mGroundHeight = this.getHeight() * 9 / 10;
         houses[0].setHouseY(mGroundHeight);
         houses[1].setHouseY(mGroundHeight);
@@ -117,13 +134,23 @@ public class GameView extends View {
         for (Iterator<Projectile> iterator = mProjectiles.iterator(); iterator.hasNext();) {
             Projectile p = iterator.next();
             if(p.checkArrived()){
-                Log.i(TAG, "ARRIVED");
                 mPaint.setColor(0xFFFFFFFF);
                 canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius, mPaint);
                 if(p.getExplosionLifetime() <= 0) {
                     iterator.remove();
                 }else{
                     p.setExplosionLifetime(p.getExplosionLifetime() - 1);
+                    for (Iterator<Projectile> iteratorMissiles = mMissiles.iterator(); iteratorMissiles.hasNext();) {
+                        Projectile missile = iteratorMissiles.next();
+                        double xDif = p.getDestx() - missile.getX_pos();
+                        double yDif = p.getDesty() - missile.getY_pos();
+                        double distanceSquared = xDif * xDif + yDif * yDif;
+                        boolean collision = distanceSquared < (mExplosionRadius) * (mExplosionRadius);
+                        if(collision){
+                            iteratorMissiles.remove();
+                            mScore++;
+                        }
+                    }
                 }
 
             }else {
@@ -131,7 +158,41 @@ public class GameView extends View {
                 //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mProjectileSize, mPaint);
                 p.calcNewPos();
-                Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
+                //Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
+            }
+        }
+
+
+
+        // Creates new missiles every mMissileFrequency frames
+        if (mMissileCountdown <= 0){
+            if(mMissileFrequency > 40) {
+                mMissileFrequency -= 2;
+            }
+            mMissileCountdown = mMissileFrequency;
+            mMissiles.add(new Projectile(randomWithRange(0, mScreenWidth), 0, randomWithRange(0, mScreenWidth), mGroundHeight, mMissileSpeed));
+        }
+        // Counts down by 1 every frame
+        mMissileCountdown -= 1;
+
+        // Draws missiles using projectile objects
+        for (Iterator<Projectile> iterator = mMissiles.iterator(); iterator.hasNext();) {
+            Projectile p = iterator.next();
+            if(p.checkArrived()){
+                Log.i(TAG, "Missile ARRIVED");
+                iterator.remove();
+                // **Check Collision with houses here**
+                for(int i = 0; i < houses.length;i++) {
+                    if (p.getX_pos() == houses[i].houseX && p.getY_pos() == houses[i].houseY){
+                        houses[i].active = false;
+                    }
+                }
+            }else {
+                mPaint.setColor(0xFFFFA500);
+                //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
+                canvas.drawCircle(p.getX_pos(), p.getY_pos(), mMissileSize, mPaint);
+                p.calcNewPos();
+                //Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
             }
         }
 
@@ -179,7 +240,7 @@ public class GameView extends View {
             //Log.i(TAG, action + " at x =" + current.x + ", y =" + current.y);
             //Log.i(TAG, "x = " + mTouchX + ", y = " + mTouchY);
             if (mProjectiles.size() < mMaxProjectiles) {
-                mProjectiles.add(new Projectile(this.getWidth() / 2, mGroundHeight, mTouchX, mTouchY));
+                mProjectiles.add(new Projectile(this.getWidth() / 2, mGroundHeight, mTouchX, mTouchY, mProjectileSpeed));
             }
         }
         return true;
@@ -230,6 +291,10 @@ public class GameView extends View {
 
     }
      */
-
+    int randomWithRange(int min, int max)
+    {
+        int range = (max - min) + 1;
+        return (int)(Math.random() * range) + min;
+    }
 
 }

@@ -20,6 +20,15 @@ public class Projectile {
         explosionLifetime = 60;
     }
 
+    public Projectile(int x, int y, int x2, int y2, int s){
+        speed = s;
+        x_pos = x;
+        y_pos = y;
+        destx = x2;
+        desty = y2;
+        explosionLifetime = 60;
+    }
+
     public void calcNewPos(){
         int deltaX = destx - x_pos;
         int deltaY = desty - y_pos;
