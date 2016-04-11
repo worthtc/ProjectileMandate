@@ -42,6 +42,7 @@ public class GameView extends View {
     private int mProjectileSpeed;
     private int mScore;
 
+
     // For the toast, can remove later
     private Context mContext;
 

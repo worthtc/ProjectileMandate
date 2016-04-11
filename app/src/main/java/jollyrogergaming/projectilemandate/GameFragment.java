@@ -75,6 +75,8 @@ public class GameFragment extends Fragment {
         // dialog.show(manager, DIALOG_TOP_SCORE);
 
 
+
+
         // Create the game view and add it to the game screen.
         mGameView = new GameView(getContext());
         mainView.addView(mGameView);
