@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -24,8 +25,11 @@ public class GameView extends View {
     private static final String TAG = "GameActivity";
     private int mTouchX;
     private int mTouchY;
-    int x ;
-    int y ;
+    RectF missileTest;
+    int totalDis = 0;
+    PointF missilePos;
+    int x = 0;
+    int y = 0 ;
     private int xpos1,ypos1,xpos2,ypos2;
 
     GameActivity obj2;
@@ -36,18 +40,14 @@ public class GameView extends View {
 
     public GameView(Context context){
         this(context, null);
-        for(int i = 0; i < 100 ; i++) {
-            createMissile();
-            moveMissile();
-        }
+
+       missilePos = new PointF(x,y);
     }
 
     public GameView(Context context, AttributeSet attrs){
         super(context, attrs);
-        for(int i = 0; i < 100 ; i++) {
-            createMissile();
-            moveMissile();
-        }
+
+
     }
     public void createMissile(){
         Random rand = new Random();
@@ -61,6 +61,7 @@ public class GameView extends View {
     // Android calls this to redraw the view, after invalidate()
     @Override
     protected void onDraw(Canvas canvas)    {
+         moveMissile();
         super.onDraw(canvas);
         //Log.d(TAG, "onDraw(); X = " + mX + " Y = " + mY);
 
@@ -70,24 +71,43 @@ public class GameView extends View {
         //Draw a circle at user touch
         mPaint.setColor(0xFF00FF00);
         canvas.drawCircle(mTouchX, mTouchY, 50, mPaint);
-        for(Missile m : missile) {
-            mPaint.setColor(0xFF00FF00);
-            canvas.drawRect(x,y,32,32,mPaint);
-
-        }
-        for (Missile m2 : missilemove){
-            mPaint.setColor(0xFF00FF00);
-            canvas.drawRect(x,y,32,32,mPaint);
-        }
-        for(Missile m : missilen) {
+        canvas.drawCircle(missilePos.x,missilePos.y,32,mPaint);
+        //for(int i = 0; i < missile.size(); i++) {
+           // canvas.drawRect(missile.get(i).getRectF(),mPaint);
+       //}
+       /* for(Missile m : missile) {
             mPaint.setColor(0xFF00FF00);
             canvas.drawRect(m.getRectF(),mPaint);
 
         }
+        for (Missile m2 : missilemove){
+            mPaint.setColor(0xFF00FF00);
+
+            canvas.drawRect(y+5,x+100,32,32,mPaint);
+        }
+        for(Missile m3 : missilen) {
+            mPaint.setColor(0xFF00FF00);
+            missileTest.left = missileTest.left + m3.getX_pos();
+            missileTest.top = missileTest.top + m3.getY_pos();
+            missileTest.right = missileTest.left + 32;
+            missileTest.bottom = missileTest.top  - 32;
+
+            canvas.drawRect(missileTest, mPaint);
+            //Log.i(TAG , "missile size" + missilen.size());
+        }*/
 
         //Log.d(TAG, "onSensorChanged() " + mLightLevel);
     }
+    public void update(){
+        /*missileTest.left = missileTest.left + m3.getX_pos();
+        missileTest.top = missileTest.top + m3.getY_pos();
+        missileTest.right = missileTest.left + 32;
+        missileTest.bottom = missileTest.top  - 32;*/
+
+    }
     public void moveMissile() {
+
+
         for(Missile m : missile) {
             xpos1 += m.getX_pos();
             ypos1 += m.getY_pos();
@@ -96,9 +116,11 @@ public class GameView extends View {
             xpos2 += m2.getX_pos();
             ypos2 += m2.getY_pos();
         }
-        x = xpos2 - xpos1;
-        y = ypos2 ;
-        int totalDis = ((x*x)+ (y*y))^(1/2);
+        //missilePos.x += x;
+       // missilePos.y += y ;
+        totalDis += ((x*x)+ (y*y))^(1/2);
+        missilePos.x += totalDis;
+        missilePos.y += totalDis ;
         Missile newM = new Missile(x,y,32,32,10);
         missilen.add(newM);
 
@@ -112,6 +134,9 @@ public class GameView extends View {
             action = "ACTION_DOWN";
             mTouchX = (int) current.x;
             mTouchY = (int) current.y;
+            //x +=  5;
+           // y +=  5;
+            //moveMissile();
             //Log.i(TAG, action + " at x =" + current.x + ", y =" + current.y);
             //Log.i(TAG, "x = " + mTouchX + ", y = " + mTouchY);
         }

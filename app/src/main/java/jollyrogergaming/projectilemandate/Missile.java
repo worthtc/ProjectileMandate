@@ -17,6 +17,9 @@ public class Missile {
 
         public Missile(int x, int y, int w, int h, int s){
             speed = s;
+            x_pos = x;
+            y_pos = y;
+
             rectF = new RectF(x,y,w,h);
         }
         public int getDesty() {
