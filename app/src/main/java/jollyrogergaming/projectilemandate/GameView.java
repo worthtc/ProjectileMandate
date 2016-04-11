@@ -42,6 +42,7 @@ public class GameView extends View {
     private House[] houses = new House[4];
 
 
+
     int x ;
     int y ;
     private int xpos1,ypos1,xpos2,ypos2;
@@ -181,6 +182,11 @@ public class GameView extends View {
                 Log.i(TAG, "Missile ARRIVED");
                 iterator.remove();
                 // **Check Collision with houses here**
+                for(int i = 0; i < houses.length;i++) {
+                    if (p.getX_pos() == houses[i].houseX && p.getY_pos() == houses[i].houseY){
+                        houses[i].active = false;
+                    }
+                }
             }else {
                 mPaint.setColor(0xFFFFA500);
                 //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
