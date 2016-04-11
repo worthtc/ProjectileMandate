@@ -146,6 +146,7 @@ public class GameView extends View {
         return true;
     }
 
+
     // House object
     private class House {
         private float houseX, houseY;
