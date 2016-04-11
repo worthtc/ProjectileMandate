@@ -18,6 +18,10 @@ import jollyrogergaming.projectilemandate.database.ScoreCursorWrapper;
 import jollyrogergaming.projectilemandate.database.ScoreDbSchema;
 
 //public class LeaderBoardFragment extends AppCompatActivity {
+
+/**
+ * Fragment that will display the players and their top scores for Projectile Mandate
+ */
 public class LeaderBoardFragment extends Fragment {
 
     private SQLiteDatabase mDatabase;
@@ -58,13 +62,21 @@ public class LeaderBoardFragment extends Fragment {
 
     }*/
 
+    /**
+     * Class to inflate the view for the Fragment, then read in the data from the database, and finally update the user interface
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return The view that was created
+     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ){
         View view = inflater.inflate(R.layout.fragment_leader_board, container, false);
         mScores = new ArrayList<>();
         mDatabase = new ScoreBaseHelper(getActivity()).getReadableDatabase();
 
-        ScoreCursorWrapper cursor = queryCrimes(null, null);
+        ScoreCursorWrapper cursor = queryScores(null, null);
 
+        //Read all of the rows of the database table and add them to our array list
         try{
             cursor.moveToFirst();
             while(!cursor.isAfterLast()){
@@ -84,7 +96,13 @@ public class LeaderBoardFragment extends Fragment {
         return view;
     }
 
-    private ScoreCursorWrapper queryCrimes( String whereClause, String[] whereArgs){
+    /**
+     * Function to run a query on the Scores table
+     * @param whereClause The where selection clause
+     * @param whereArgs the arguments for the where clause
+     * @return A wrapper for the cursor that makes it easy to retrieve the information from the cursor
+     */
+    private ScoreCursorWrapper queryScores( String whereClause, String[] whereArgs){
         Cursor cursor = mDatabase.query(
                 ScoreDbSchema.ScoreTable.NAME,
                 null, // Columns - null selects all columns
@@ -98,6 +116,9 @@ public class LeaderBoardFragment extends Fragment {
         return new ScoreCursorWrapper(cursor);
     }
 
+    /**
+     * Adapter for displaying Scores in the Recycler view
+     */
     private class ScoreAdapter extends RecyclerView.Adapter<ScoreHolder>{
         private ArrayList<Score> mScores;
 
@@ -124,6 +145,9 @@ public class LeaderBoardFragment extends Fragment {
         }
     }
 
+    /**
+     * Class to hold each individual score in the RecyclerView
+     */
     private class ScoreHolder extends RecyclerView.ViewHolder{
         private TextView mTextUser;
         private TextView mTextScore;
@@ -143,6 +167,10 @@ public class LeaderBoardFragment extends Fragment {
         }
     }
 
+    /**
+     * Update the user interface, creating the adapter if it needs to be created. If there are no scores to be displayed, we display a message telling the user this
+     * Otherwise, we show all of the scores in the database.
+     */
     public void updateUI(){
 
         if( mAdapter == null) {

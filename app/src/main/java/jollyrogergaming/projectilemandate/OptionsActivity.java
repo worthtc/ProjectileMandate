@@ -27,7 +27,10 @@ public class OptionsActivity extends AppCompatActivity {
     public static final String KEY_COLOR_SCHEMA = "color_scheme";
     public static final String KEY_IS_GAME_HARD = "is_game_easy";
 
-
+    /**
+     * Create action listeners for all of the buttons in this activities layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

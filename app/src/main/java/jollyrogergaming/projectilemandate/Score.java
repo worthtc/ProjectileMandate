@@ -3,6 +3,10 @@ package jollyrogergaming.projectilemandate;
 /**
  * Created by Trevor on 4/10/2016.
  */
+
+/**
+ * Score class to hold the data corresponding toe a player name and their score.
+ */
 public class Score {
     private int mScore;
     private String mUser;
