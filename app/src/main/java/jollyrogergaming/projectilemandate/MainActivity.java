@@ -22,7 +22,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_GAME = 1;
     private static final int REQUEST_CODE_OPTIONS = 0;
 
-
+    /**
+     * Create onClickListeners for all of the activities in this layout.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +85,13 @@ public class MainActivity extends AppCompatActivity {
         savedInstanceState.putBoolean(KEY_IS_GAME_HARD, mIsGameHard);
     }
 
-
+    /**
+     * Once we return from an activity, we figure out what activity we returned from, and if it is the options activity, we
+     * save the options that hte user chose.
+     * @param requestCode The code corresponding to which activity we returned from
+     * @param resultCode Whether we got a correct result or not
+     * @param data The data that was returned
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if( resultCode != Activity.RESULT_OK){
