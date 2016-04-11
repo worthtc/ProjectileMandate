@@ -29,6 +29,7 @@ public class GameView extends View {
     private int mMaxProjectiles;
     private int mExplosionRadius;
     private int mProjectileSize;
+    private int mGroundHeight;
 
     private House[] houses = new House[4];
 
@@ -81,6 +82,11 @@ public class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas)    {
         super.onDraw(canvas);
+        mGroundHeight = this.getHeight() * 9 / 10;
+        houses[0].setHouseY(mGroundHeight);
+        houses[1].setHouseY(mGroundHeight);
+        houses[2].setHouseY(mGroundHeight);
+        houses[3].setHouseY(mGroundHeight);
         //Log.d(TAG, "onDraw(); X = " + mX + " Y = " + mY);
 
         //Draw background, feel free to delete or change color. Here just in case we want a background color.
@@ -92,13 +98,12 @@ public class GameView extends View {
 
 
         mPaint.setColor(0xFF000000);
-        canvas.drawRect(this.getWidth()/2 - 7, 610, this.getWidth() / 2 + 7, 660, mPaint);
+        canvas.drawRect(this.getWidth() / 2 - 7, mGroundHeight-50, this.getWidth() / 2 + 7, mGroundHeight, mPaint);
 
         mPaint.setColor(0xFF00FFFF);
-        canvas.drawCircle(this.getWidth() / 2, 665, 30, mPaint);
-
+        canvas.drawCircle(this.getWidth() / 2, mGroundHeight, 30, mPaint);
         mPaint.setColor(0xFF00FF00);
-        canvas.drawRect(0, this.getHeight() * 9 / 10, this.getWidth(), this.getHeight(), mPaint);
+        canvas.drawRect(0, mGroundHeight, this.getWidth(), this.getHeight(), mPaint);
 
         // Draws houses
         mPaint.setColor(0xFFFF0000);
@@ -193,9 +198,38 @@ public class GameView extends View {
         }
 
         public void draw(Canvas canvas, Paint paint) {
-            canvas.drawRect(this.houseX, this.houseY, this.houseX + 100, this.houseY + 30, paint);
+            canvas.drawRect(this.houseX, this.houseY, this.houseX + 100, this.houseY - 30, paint);
+        }
+
+        public void setHouseY(int y){
+            houseY = y;
         }
     };
+
+    /*
+    public void moveMissile() {
+        Random rand = new Random();
+        int n = rand.nextInt(1000);
+
+
+        x = n;
+        y = n;
+
+        totalDis = Math.sqrt((x * x)+(y*y));
+        missilePos.x += totalDis;
+        missilePos.y = y ;
+
+
+    }
+    public void createMissile(){
+        missilePos = new PointF(x,y);
+        n = rand.nextInt(1000);
+        missilePos.x = n;
+        missilePos.y = 0;
+
+
+    }
+     */
 
 
 }
