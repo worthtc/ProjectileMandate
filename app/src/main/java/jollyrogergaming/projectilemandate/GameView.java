@@ -26,9 +26,13 @@ public class GameView extends View {
     private int mTouchX;
     private int mTouchY;
     private ArrayList<Projectile> mProjectiles;
+    private ArrayList<Projectile> mMissiles;
     private int mMaxProjectiles;
     private int mExplosionRadius;
     private int mProjectileSize;
+    private int mMissileFrequency;
+    private int mMissileCountdown;
+    private int mMissileSize;
 
     private House[] houses = new House[4];
 
@@ -58,8 +62,12 @@ public class GameView extends View {
         houses[3] = new House(1010, 650);
         mMaxProjectiles = 2;
         mProjectiles = new ArrayList<Projectile>();
+        mMissiles = new ArrayList<Projectile>();
         mExplosionRadius = 50;
         mProjectileSize = 20;
+        mMissileFrequency = 300;
+        mMissileCountdown = 20;
+        mMissileSize = 15;
 
         for(int i = 0; i < 100 ; i++) {
             createMissile();
@@ -92,7 +100,7 @@ public class GameView extends View {
 
 
         mPaint.setColor(0xFF000000);
-        canvas.drawRect(this.getWidth()/2 - 7, 610, this.getWidth() / 2 + 7, 660, mPaint);
+        canvas.drawRect(this.getWidth() / 2 - 7, 610, this.getWidth() / 2 + 7, 660, mPaint);
 
         mPaint.setColor(0xFF00FFFF);
         canvas.drawCircle(this.getWidth() / 2, 665, 30, mPaint);
@@ -127,6 +135,33 @@ public class GameView extends View {
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mProjectileSize, mPaint);
                 p.calcNewPos();
                 Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
+            }
+        }
+
+        // Creates new missiles every mMissileFrequency frames
+        if (mMissileCountdown <= 0){
+            if(mMissileFrequency > 40) {
+                mMissileFrequency -= 2;
+            }
+            mMissileCountdown = mMissileFrequency;
+            mMissiles.add(new Projectile(0, 0, 1500, 1500, 3));
+        }
+        // Counts down by 1 every frame
+        mMissileCountdown -= 1;
+
+        // Draws missiles using projectile objects
+        for (Iterator<Projectile> iterator = mMissiles.iterator(); iterator.hasNext();) {
+            Projectile p = iterator.next();
+            if(p.checkArrived()){
+                Log.i(TAG, "Missile ARRIVED");
+                iterator.remove();
+                // **Check Collision with houses here**
+            }else {
+                mPaint.setColor(0xFF555555);
+                //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
+                canvas.drawCircle(p.getX_pos(), p.getY_pos(), mMissileSize, mPaint);
+                p.calcNewPos();
+                //Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
             }
         }
 
