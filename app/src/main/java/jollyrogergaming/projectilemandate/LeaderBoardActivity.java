@@ -1,14 +1,22 @@
 package jollyrogergaming.projectilemandate;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 
-public class LeaderBoardActivity extends AppCompatActivity {
+import android.support.v4.app.Fragment;
 
+/**
+ * Created by Trevor on 4/10/2016.
+ */
+
+/**
+ * Simple activity class that creates a new LeaderBoardFragment
+ */
+public class LeaderBoardActivity extends SingleFragmentActivity {
+    /*@Override
+    protected int getLayoutResId(){
+        return R.layout.fragment_leader_board;
+    }*/
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leader_board);
+    protected Fragment createFragment(){
+        return new LeaderBoardFragment();
     }
 }
