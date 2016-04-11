@@ -80,7 +80,7 @@ public class GameView extends View {
         mMissiles = new ArrayList<Projectile>();
         mExplosionRadius = 50;
         mProjectileSize = 20;
-        mMissileFrequency = 300;
+        mMissileFrequency = 40;
         mMissileCountdown = 20;
         mMissileSize = 15;
         mMissileSpeed = 6;
