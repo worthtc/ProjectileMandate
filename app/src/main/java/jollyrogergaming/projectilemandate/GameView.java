@@ -179,7 +179,7 @@ public class GameView extends View {
             //Log.i(TAG, action + " at x =" + current.x + ", y =" + current.y);
             //Log.i(TAG, "x = " + mTouchX + ", y = " + mTouchY);
             if (mProjectiles.size() < mMaxProjectiles) {
-                mProjectiles.add(new Projectile(0, 0, mTouchX, mTouchY));
+                mProjectiles.add(new Projectile(this.getWidth() / 2, mGroundHeight, mTouchX, mTouchY));
             }
         }
         return true;
