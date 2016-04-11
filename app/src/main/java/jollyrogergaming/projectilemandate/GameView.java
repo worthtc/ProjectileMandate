@@ -106,7 +106,8 @@ public class GameView extends View {
 
     }
     public void moveMissile() {
-
+        Random rand = new Random();
+        int n = rand.nextInt(1000);
 
         for(Missile m : missile) {
             xpos1 += m.getX_pos();
@@ -116,11 +117,13 @@ public class GameView extends View {
             xpos2 += m2.getX_pos();
             ypos2 += m2.getY_pos();
         }
+        x += 1;
+        y += 1;
         //missilePos.x += x;
        // missilePos.y += y ;
         totalDis += ((x*x)+ (y*y))^(1/2);
-        missilePos.x += totalDis;
-        missilePos.y += totalDis ;
+        missilePos.x += n;
+        missilePos.y += n ;
         Missile newM = new Missile(x,y,32,32,10);
         missilen.add(newM);
 
