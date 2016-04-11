@@ -27,6 +27,8 @@ public class GameView extends View {
     private int mTouchY;
     private ArrayList<Projectile> mProjectiles;
     private int mMaxProjectiles;
+    private int mExplosionRadius;
+    private int mProjectileSize;
 
     private House[] houses = new House[4];
 
@@ -56,6 +58,8 @@ public class GameView extends View {
         houses[3] = new House(1010, 650);
         mMaxProjectiles = 2;
         mProjectiles = new ArrayList<Projectile>();
+        mExplosionRadius = 50;
+        mProjectileSize = 20;
 
         for(int i = 0; i < 100 ; i++) {
             createMissile();
@@ -110,7 +114,7 @@ public class GameView extends View {
             if(p.checkArrived()){
                 Log.i(TAG, "ARRIVED");
                 mPaint.setColor(0xFFFFFFFF);
-                canvas.drawCircle(p.getDestx(), p.getDesty(), 50, mPaint);
+                canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius, mPaint);
                 if(p.getExplosionLifetime() <= 0) {
                     iterator.remove();
                 }else{
@@ -120,7 +124,7 @@ public class GameView extends View {
             }else {
                 mPaint.setColor(0xFFFFFFFF);
                 //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
-                canvas.drawCircle(p.getX_pos(), p.getY_pos(), 20, mPaint);
+                canvas.drawCircle(p.getX_pos(), p.getY_pos(), mProjectileSize, mPaint);
                 p.calcNewPos();
                 Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
             }
