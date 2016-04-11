@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -27,6 +28,7 @@ public class GameActivity extends SingleFragmentActivity {
     private boolean mColorScheme; //False with a light color scheme, True with a dark color scheme
     private boolean mIsGameHard;
 
+
     //Hide the action bar since this is the game window
 
 
@@ -36,6 +38,7 @@ public class GameActivity extends SingleFragmentActivity {
         mIsGameHard = getIntent().getBooleanExtra(EXTRA_IS_GAME_HARD, false);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
         return GameFragment.newInstance(mColorScheme, mIsGameHard);
     }
 
