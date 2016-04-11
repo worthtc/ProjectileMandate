@@ -17,4 +17,8 @@
     <string name="score_dialog_hint">Enter your name.</string>
     <string name="empty_list">There are no top scores.</string>
     <string name="clear_database_button">Clear Database</string>
+    <string name="restart_game_text">Would you like to play again?</string>
+    <string name="restart_game_title">Game Over!</string>
+    <string name="restart_game_dialog_positive">Yes</string>
+    <string name="restart_game_dialog_negative">No</string>
 </resources>

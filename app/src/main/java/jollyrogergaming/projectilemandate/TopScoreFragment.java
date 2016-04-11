@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import jollyrogergaming.projectilemandate.database.ScoreDbSchema;
  */
 public class TopScoreFragment extends DialogFragment {
     private static final String ARG_SCORE = "score";
+    private static final String DIALOG_RESTART_GAME = "DialogRestartGame";
     private String mText;
     private EditText mUserName;
     private int mScore;
@@ -86,6 +88,9 @@ public class TopScoreFragment extends DialogFragment {
                         ContentValues values = getContentValues(mUserName.getText().toString(), mScore);
                         mDatabase.insert(ScoreDbSchema.ScoreTable.NAME, null, values);
                         mDatabase.close();
+                        FragmentManager manager = getFragmentManager();
+                        RestartGameFragment restartDialog = RestartGameFragment.newInstance();
+                        restartDialog.show(manager, DIALOG_RESTART_GAME);
 
                     }
                 })
@@ -96,6 +101,9 @@ public class TopScoreFragment extends DialogFragment {
                      */
                     public void onClick(DialogInterface dialog, int which) {
                         mDatabase.close();
+                        FragmentManager manager = getFragmentManager();
+                        RestartGameFragment restartDialog = RestartGameFragment.newInstance();
+                        restartDialog.show(manager, DIALOG_RESTART_GAME);
                     }
                 })
                 .create();

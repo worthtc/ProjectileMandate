@@ -1,6 +1,10 @@
 package jollyrogergaming.projectilemandate;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +36,7 @@ public class GameFragment extends Fragment {
     public static final String KEY_COLOR_SCHEMA = "color_scheme";
     public static final String KEY_IS_GAME_HARD = "is_game_easy";
     private static final String DIALOG_TOP_SCORE = "DialogTopScore";
+    private static final String DIALOG_RESTART_GAME = "DialogRestartGame";
     private static final String TAG = "GameActivity";
 
     GameView mGameView;

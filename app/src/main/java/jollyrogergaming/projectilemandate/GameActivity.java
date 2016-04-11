@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class GameActivity extends SingleFragmentActivity {
+public class GameActivity extends SingleFragmentActivity implements RestartGameFragment.Restartable{
     public static final String EXTRA_COLOR_SCHEME = "jollyrogergaming.projectilemandate.color_scheme";
     public static final String EXTRA_IS_GAME_HARD = "jollyrogergaming.projectilemandate.is_game_easy";
 
@@ -42,4 +42,12 @@ public class GameActivity extends SingleFragmentActivity {
         return GameFragment.newInstance(mColorScheme, mIsGameHard);
     }
 
+    @Override
+    public void restart(){
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+
+        fragment = createFragment();
+        fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+    }
 }
