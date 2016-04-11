@@ -37,6 +37,7 @@ public class GameView extends View {
     private int mScreenWidth;
     private int mMissileSpeed;
     private int mProjectileSpeed;
+    private int mScore;
 
     private House[] houses = new House[4];
 
@@ -74,6 +75,7 @@ public class GameView extends View {
         mMissileSize = 15;
         mMissileSpeed = 6;
         mProjectileSpeed = 10;
+        mScore = 0;
 
         for(int i = 0; i < 100 ; i++) {
             createMissile();
@@ -131,13 +133,23 @@ public class GameView extends View {
         for (Iterator<Projectile> iterator = mProjectiles.iterator(); iterator.hasNext();) {
             Projectile p = iterator.next();
             if(p.checkArrived()){
-                Log.i(TAG, "ARRIVED");
                 mPaint.setColor(0xFFFFFFFF);
                 canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius, mPaint);
                 if(p.getExplosionLifetime() <= 0) {
                     iterator.remove();
                 }else{
                     p.setExplosionLifetime(p.getExplosionLifetime() - 1);
+                    for (Iterator<Projectile> iteratorMissiles = mMissiles.iterator(); iteratorMissiles.hasNext();) {
+                        Projectile missile = iteratorMissiles.next();
+                        double xDif = p.getDestx() - missile.getX_pos();
+                        double yDif = p.getDesty() - missile.getY_pos();
+                        double distanceSquared = xDif * xDif + yDif * yDif;
+                        boolean collision = distanceSquared < (mExplosionRadius) * (mExplosionRadius);
+                        if(collision){
+                            iteratorMissiles.remove();
+                            mScore++;
+                        }
+                    }
                 }
 
             }else {
@@ -145,7 +157,7 @@ public class GameView extends View {
                 //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mProjectileSize, mPaint);
                 p.calcNewPos();
-                Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
+                //Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
             }
         }
 
