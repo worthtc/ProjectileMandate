@@ -1,6 +1,5 @@
 package jollyrogergaming.projectilemandate;
 
-import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,7 +34,6 @@ public class GameActivity extends AppCompatActivity {
     public static final String EXTRA_IS_GAME_HARD = "jollyrogergaming.projectilemandate.is_game_easy";
     public static final String KEY_COLOR_SCHEMA = "color_scheme";
     public static final String KEY_IS_GAME_HARD = "is_game_easy";
-    private static final String DIALOG_TOP_SCORE = "DialogTopScore";
     private static final String TAG = "GameActivity";
 
     GameView mGameView;
@@ -57,12 +55,8 @@ public class GameActivity extends AppCompatActivity {
 
         //Main screen
         FrameLayout mainView = (FrameLayout) findViewById(R.id.game_view);
-        FragmentManager manager = getSupportFragmentManager();
-        //TopScoreFragment dialog = TopScoreFragment.newInstance(5);
-       // dialog.show(manager, DIALOG_TOP_SCORE);
 
         // Create the game view and add it to the game screen.
-
         mGameView = new jollyrogergaming.projectilemandate.GameView(this);
         mainView.addView(mGameView);
 

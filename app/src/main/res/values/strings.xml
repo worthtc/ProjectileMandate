@@ -10,11 +10,4 @@
     <string name="difficulty">Difficulty</string>
     <string name="easy_button">Easy</string>
     <string name="hard_button">Hard</string>
-    <string name="score_dialog">Your score: %1$d! Would you like to submit your score to the database?</string>
-    <string name="score_dialog_title">Top Score!</string>
-    <string name="score_dialog_positive">Submit</string>
-    <string name="score_dialog_negative">Nah</string>
-    <string name="score_dialog_hint">Enter your name.</string>
-    <string name="empty_list">There are no top scores.</string>
-    <string name="clear_database_button">Clear Database</string>
 </resources>
