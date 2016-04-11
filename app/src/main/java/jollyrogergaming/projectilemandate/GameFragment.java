@@ -70,9 +70,6 @@ public class GameFragment extends Fragment {
 
         //Main screen
         FrameLayout mainView = (FrameLayout) view.findViewById(R.id.game_view);
-        //FragmentManager manager = getSupportFragmentManager();
-        //TopScoreFragment dialog = TopScoreFragment.newInstance(5);
-        // dialog.show(manager, DIALOG_TOP_SCORE);
 
 
 
@@ -104,6 +101,12 @@ public class GameFragment extends Fragment {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
+                        if( mGameView.isGameOver()){
+                            mTimerTask.cancel();
+                            FragmentManager manager = getFragmentManager();
+                            TopScoreFragment dialog = TopScoreFragment.newInstance(mGameView.getScore());
+                            dialog.show(manager, DIALOG_TOP_SCORE);
+                        }
                         mGameView.invalidate();
                     }
                 });
