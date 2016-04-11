@@ -2,12 +2,13 @@ package jollyrogergaming.projectilemandate;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends SingleFragmentActivity {
     private boolean mColorScheme; //False with a light color scheme, True with a dark color scheme
     private boolean mIsGameHard;
     private Button mPlayButton;
@@ -22,91 +23,12 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_GAME = 1;
     private static final int REQUEST_CODE_OPTIONS = 0;
 
-    /**
-     * Create onClickListeners for all of the activities in this layout.
-     * @param savedInstanceState
-     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mPlayButton = (Button) findViewById(R.id.play_button);
-        mPlayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, GameActivity.class);
-                i.putExtra(EXTRA_COLOR_SCHEME, mColorScheme);
-                i.putExtra(EXTRA_IS_GAME_HARD, mIsGameHard);
-                startActivityForResult(i, REQUEST_CODE_GAME);
-            }
-        });
-
-        mOptionsButton = (Button) findViewById(R.id.options_button);
-        mOptionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, OptionsActivity.class);
-                i.putExtra(EXTRA_COLOR_SCHEME, mColorScheme);
-                i.putExtra(EXTRA_IS_GAME_HARD, mIsGameHard);
-                startActivityForResult(i, REQUEST_CODE_OPTIONS);
-            }
-        });
-
-        mLeaderBoardButton = (Button) findViewById(R.id.leader_board_button);
-        mLeaderBoardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, LeaderBoardActivity.class);
-                i.putExtra(EXTRA_COLOR_SCHEME, mColorScheme);
-                i.putExtra(EXTRA_IS_GAME_HARD, mIsGameHard);
-                startActivityForResult(i, REQUEST_CODE_LEADERBOARD);
-            }
-        });
-
-        mQuitButton = (Button) findViewById(R.id.quit_button);
-        mQuitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        if( savedInstanceState != null){
-            mColorScheme = savedInstanceState.getBoolean(KEY_COLOR_SCHEMA);
-            mIsGameHard = savedInstanceState.getBoolean(KEY_IS_GAME_HARD);
-        }
+    protected Fragment createFragment(){
+        mColorScheme = getIntent().getBooleanExtra(EXTRA_COLOR_SCHEME, false);
+        mIsGameHard = getIntent().getBooleanExtra(EXTRA_IS_GAME_HARD, false);
+        return MainFragment.newInstance(false, false);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState){
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putBoolean(KEY_COLOR_SCHEMA, mColorScheme);
-        savedInstanceState.putBoolean(KEY_IS_GAME_HARD, mIsGameHard);
-    }
 
-    /**
-     * Once we return from an activity, we figure out what activity we returned from, and if it is the options activity, we
-     * save the options that hte user chose.
-     * @param requestCode The code corresponding to which activity we returned from
-     * @param resultCode Whether we got a correct result or not
-     * @param data The data that was returned
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if( resultCode != Activity.RESULT_OK){
-            return;
-        }
-        if( requestCode == REQUEST_CODE_OPTIONS){
-            mColorScheme = data.getBooleanExtra(EXTRA_COLOR_SCHEME, false);
-            mIsGameHard = data.getBooleanExtra(EXTRA_IS_GAME_HARD, false);
-        }
-        else if( requestCode == REQUEST_CODE_LEADERBOARD){
-
-        }
-        else if( requestCode == REQUEST_CODE_GAME){
-
-        }
-
-    }
 }
