@@ -1,5 +1,6 @@
 package jollyrogergaming.projectilemandate;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
@@ -70,16 +71,11 @@ public class GameFragment extends Fragment {
         //Main screen
         FrameLayout mainView = (FrameLayout) view.findViewById(R.id.game_view);
 
-        // Create the game view and add it to the game screen.
 
+        // Create the game view and add it to the game screen.
         mGameView = new GameView(getContext());
         mainView.addView(mGameView);
 
-//        mTestTextOne = (TextView) findViewById(R.id.text_one);
-//        mTestTextOne.setText("ColorScheme: " + mColorScheme);
-//
-//        mTestTextTwo = (TextView) findViewById(R.id.text_two);
-//        mTestTextTwo.setText("IsGameHard: " + mIsGameHard);
         return view;
     }
 

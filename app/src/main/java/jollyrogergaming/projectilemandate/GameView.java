@@ -8,8 +8,10 @@ import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,9 @@ public class GameView extends View {
     private int mScore;
     private static final int HOUSE_WIDTH = 100;
     private boolean mIsGameOver;
+
+    // For the toast, can remove later
+    private Context mContext;
 
     private House[] houses = new House[4];
 
@@ -81,10 +86,16 @@ public class GameView extends View {
         mProjectileSpeed = 10;
         mScore = 0;
 
+
+        // For the toast, can remove later
+        mContext = context;
+
         for(int i = 0; i < 100 ; i++) {
             createMissile();
             moveMissile();
         }
+
+
 
 
     }
@@ -156,6 +167,12 @@ public class GameView extends View {
                         if(collision){
                             iteratorMissiles.remove();
                             mScore++;
+                            //Remove later
+                            CharSequence text = "Score: " + mScore;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(mContext, text, duration);
+                            toast.show();
+                            //
                         }
                     }
                 }
