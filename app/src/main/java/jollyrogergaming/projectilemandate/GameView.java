@@ -38,6 +38,8 @@ public class GameView extends View {
     private int mMissileSpeed;
     private int mProjectileSpeed;
     private int mScore;
+    private static final int HOUSE_WIDTH = 100;
+    private boolean mIsGameOver;
 
     private House[] houses = new House[4];
 
@@ -183,7 +185,16 @@ public class GameView extends View {
                 iterator.remove();
                 // **Check Collision with houses here**
                 for(int i = 0; i < houses.length;i++) {
-                    if (p.getX_pos() == houses[i].houseX && p.getY_pos() == houses[i].houseY){
+                    /*if (p.getX_pos() == houses[i].houseX && p.getY_pos() == houses[i].houseY){
+                        houses[i].active = false;
+                    }*/
+                    if((p.getX_pos() >= houses[i].houseX) && (p.getX_pos() <= (houses[i].houseX + HOUSE_WIDTH))){
+                        houses[i].active = false;
+                    }
+                    else if(((p.getX_pos() + mProjectileSize) >= houses[i].houseX) && ((p.getX_pos() + mProjectileSize) <= (houses[i].houseX + HOUSE_WIDTH))){ //Center of projectile is not in the rectangle, but the right edge of the projectile is
+                        houses[i].active = false;
+                    }
+                    else if(((p.getX_pos() - mProjectileSize) >= houses[i].houseX) && ((p.getX_pos() - mProjectileSize) <= (houses[i].houseX + HOUSE_WIDTH))){ //Center of projectile is not in the rectangle, but the left edge of the projectile is
                         houses[i].active = false;
                     }
                 }
@@ -208,6 +219,17 @@ public class GameView extends View {
         for(Missile m : missilen) {
             mPaint.setColor(0xFF00FF00);
             canvas.drawRect(m.getRectF(),mPaint);
+        }
+
+        boolean canGameContinue = false;
+        for(int i = 0; i < houses.length;i++) {
+            if( houses[i].active ){
+                canGameContinue = true;
+                break;
+            }
+        }
+        if( !canGameContinue ){
+            mIsGameOver = true;
         }
 
         //Log.d(TAG, "onSensorChanged() " + mLightLevel);
@@ -259,7 +281,7 @@ public class GameView extends View {
         }
 
         public void draw(Canvas canvas, Paint paint) {
-            canvas.drawRect(this.houseX, this.houseY, this.houseX + 100, this.houseY - 30, paint);
+            canvas.drawRect(this.houseX, this.houseY - 30, this.houseX + HOUSE_WIDTH, this.houseY, paint);
         }
 
         public void setHouseY(int y){
@@ -295,6 +317,14 @@ public class GameView extends View {
     {
         int range = (max - min) + 1;
         return (int)(Math.random() * range) + min;
+    }
+
+    public boolean isGameOver(){
+        return mIsGameOver;
+    }
+
+    public int getScore(){
+        return mScore;
     }
 
 }
