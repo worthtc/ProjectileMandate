@@ -166,15 +166,15 @@ public class GameView extends View {
         for (Iterator<Projectile> iterator = mProjectiles.iterator(); iterator.hasNext();) {
             Projectile p = iterator.next();
             if(p.checkArrived()){
-                mPaint.setColor(0xFFFF0084);
-                canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius, mPaint);
-                mPaint.setColor(0xFF0000FF);
-                canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius*2/3, mPaint);
-                mPaint.setColor(0xFF08E300);
-                canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius*1/3, mPaint);
                 if(p.getExplosionLifetime() <= 0) {
                     iterator.remove();
                 }else{
+                    mPaint.setColor(0xFFFF0084);
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius / p.getExplosionLifetime() * 60, mPaint);
+                    mPaint.setColor(0xFF0000FF);
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius / p.getExplosionLifetime() * 60 *2/3, mPaint);
+                    mPaint.setColor(0xFF08E300);
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius / p.getExplosionLifetime() * 60 *1/3, mPaint);
                     p.setExplosionLifetime(p.getExplosionLifetime() - 1);
                     for (Iterator<Projectile> iteratorMissiles = mMissiles.iterator(); iteratorMissiles.hasNext();) {
                         Projectile missile = iteratorMissiles.next();
