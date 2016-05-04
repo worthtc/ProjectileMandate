@@ -41,7 +41,7 @@ public class GameView extends View {
     private int mMissileSpeed;
     private int mProjectileSpeed;
     private int mScore;
-    private static final int HOUSE_WIDTH = 100;
+    private int HOUSE_WIDTH;
     private boolean mIsGameOver;
 
 
@@ -71,6 +71,7 @@ public class GameView extends View {
 
     public GameView(Context context, AttributeSet attrs){
         super(context, attrs);
+        HOUSE_WIDTH = this.getWidth()/5;
         houses[0] = new House(0, 0);
         houses[1] = new House(0, 0);
         houses[2] = new House(0, 0);
@@ -117,16 +118,18 @@ public class GameView extends View {
         super.onDraw(canvas);
         mScreenWidth = this.getWidth();
         mGroundHeight = this.getHeight() * 9 / 10;
+        HOUSE_WIDTH = (int)(mScreenWidth * 0.15);
 
         // This should probably be done outside of the game loop somewhere
         houses[0].setHouseY(mGroundHeight);
         houses[1].setHouseY(mGroundHeight);
         houses[2].setHouseY(mGroundHeight);
         houses[3].setHouseY(mGroundHeight);
-        houses[0].setHouseX(((mScreenWidth/5) * 1) - (HOUSE_WIDTH/2));
-        houses[1].setHouseX(((mScreenWidth/5) * 2) - (HOUSE_WIDTH/2));
-        houses[2].setHouseX(((mScreenWidth/5) * 3) - (HOUSE_WIDTH/2));
-        houses[3].setHouseX(((mScreenWidth/5) * 4) - (HOUSE_WIDTH/2));
+        houses[0].setHouseX(mScreenWidth / 20);
+        houses[1].setHouseX((mScreenWidth / 20) * 2 + HOUSE_WIDTH);
+        houses[2].setHouseX((mScreenWidth / 20) * 6 + HOUSE_WIDTH * 2);
+        houses[3].setHouseX((mScreenWidth / 20) * 7 + HOUSE_WIDTH * 3);
+
         //Log.d(TAG, "onDraw(); X = " + mX + " Y = " + mY);
 
         //Draw background, feel free to delete or change color. Here just in case we want a background color.
