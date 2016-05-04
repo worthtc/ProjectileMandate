@@ -143,12 +143,16 @@ public class GameView extends View {
 
 
         mPaint.setColor(0xFF000000);
-        canvas.drawRect(this.getWidth() / 2 - 7, mGroundHeight-50, this.getWidth() / 2 + 7, mGroundHeight, mPaint);
+        canvas.drawRect(this.getWidth() / 2 - 7, mGroundHeight - 50, this.getWidth() / 2 + 7, mGroundHeight, mPaint);
 
         mPaint.setColor(0xFF00FFFF);
         canvas.drawCircle(this.getWidth() / 2, mGroundHeight, 30, mPaint);
+        mPaint.setColor(0xFF0000FF);
+        canvas.drawCircle(this.getWidth() / 2, mGroundHeight, 15, mPaint);
         mPaint.setColor(0xFF00FF00);
         canvas.drawRect(0, mGroundHeight, this.getWidth(), this.getHeight(), mPaint);
+        mPaint.setColor(0xFF000000);
+        canvas.drawRect(20, mGroundHeight+20, this.getWidth()-mScreenWidth/20, this.getHeight()-20, mPaint);
 
         // Draws houses
         mPaint.setColor(0xFFFF0000);
@@ -162,8 +166,12 @@ public class GameView extends View {
         for (Iterator<Projectile> iterator = mProjectiles.iterator(); iterator.hasNext();) {
             Projectile p = iterator.next();
             if(p.checkArrived()){
-                mPaint.setColor(0xFFFFFFFF);
+                mPaint.setColor(0xFFFF0084);
                 canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius, mPaint);
+                mPaint.setColor(0xFF0000FF);
+                canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius*2/3, mPaint);
+                mPaint.setColor(0xFF08E300);
+                canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius*1/3, mPaint);
                 if(p.getExplosionLifetime() <= 0) {
                     iterator.remove();
                 }else{
@@ -188,9 +196,12 @@ public class GameView extends View {
                 }
 
             }else {
-                mPaint.setColor(0xFFFFFFFF);
+                mPaint.setColor(0xFF00FF00);
                 //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mProjectileSize, mPaint);
+                mPaint.setColor(0xFFFFFFFF);
+                //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
+                canvas.drawCircle(p.getX_pos(), p.getY_pos(), mProjectileSize/2, mPaint);
                 p.calcNewPos();
                 //Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
             }
@@ -231,9 +242,12 @@ public class GameView extends View {
                     }
                 }
             }else {
-                mPaint.setColor(0xFFFFA500);
+                mPaint.setColor(0xFFF7F702);
                 //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mMissileSize, mPaint);
+                Paint whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                whitePaint.setColor(0xFFFF0000);
+                canvas.drawCircle(p.getX_pos(), p.getY_pos(), mMissileSize-mMissileSize/3, whitePaint);
                 p.calcNewPos();
                 //Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
             }
@@ -300,6 +314,9 @@ public class GameView extends View {
 
         public void draw(Canvas canvas, Paint paint) {
             canvas.drawRect(this.houseX, this.houseY - 30, this.houseX + HOUSE_WIDTH, this.houseY, paint);
+            Paint whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            whitePaint.setColor(0xFFFFFFFF);
+            canvas.drawRect(this.houseX+10, this.houseY - 20, this.houseX + HOUSE_WIDTH - 10, this.houseY, whitePaint);
         }
 
         public void setHouseY(int y){
