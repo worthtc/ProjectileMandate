@@ -170,11 +170,11 @@ public class GameView extends View {
                     iterator.remove();
                 }else{
                     mPaint.setColor(0xFFFF0084);
-                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius / p.getExplosionLifetime() * 60, mPaint);
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius * (60 - p.getExplosionLifetime()) / 60, mPaint);
                     mPaint.setColor(0xFF0000FF);
-                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius / p.getExplosionLifetime() * 60 *2/3, mPaint);
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius * (60 - p.getExplosionLifetime()) / 60 *2/3, mPaint);
                     mPaint.setColor(0xFF08E300);
-                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius / p.getExplosionLifetime() * 60 *1/3, mPaint);
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius * (60 - p.getExplosionLifetime()) / 60 *1/3, mPaint);
                     p.setExplosionLifetime(p.getExplosionLifetime() - 1);
                     for (Iterator<Projectile> iteratorMissiles = mMissiles.iterator(); iteratorMissiles.hasNext();) {
                         Projectile missile = iteratorMissiles.next();
