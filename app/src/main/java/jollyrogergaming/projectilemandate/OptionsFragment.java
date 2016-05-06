@@ -155,7 +155,7 @@ public class OptionsFragment extends Fragment{
         savedInstanceState.putBoolean(KEY_COLOR_SCHEMA, mColorScheme);
         savedInstanceState.putBoolean(KEY_IS_GAME_HARD, mIsGameHard);
     }
-    
+
 
     @Override
     public void onDestroy(){
