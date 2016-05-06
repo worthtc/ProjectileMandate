@@ -35,13 +35,20 @@ public class GameView extends View {
     private int mProjectileSize;
     private int mMissileFrequency;
     private int mMissileCountdown;
+    private int mMissileMinFrequency;
+    private int mMissileSpeedCountdown;
     private int mMissileSize;
     private int mGroundHeight;
     private int mScreenWidth;
     private int mMissileSpeed;
+    private int mMissileMaxSpeed;
     private int mProjectileSpeed;
     private int mScore;
     private int HOUSE_WIDTH;
+    private boolean mIsGameHard;
+    private boolean mColorScheme;
+    private int mMisileSpeedUpTime;
+
     private boolean mIsGameOver;
 
 
@@ -62,15 +69,18 @@ public class GameView extends View {
     private ArrayList<Missile> missilen = new ArrayList<>();
 
     public GameView(Context context){
-        this(context, null);
+        this(context, null, false, false);
         for(int i = 0; i < 100 ; i++) {
             createMissile();
             moveMissile();
         }
     }
 
-    public GameView(Context context, AttributeSet attrs){
+    public GameView(Context context, AttributeSet attrs, boolean hard , boolean color){
         super(context, attrs);
+        mIsGameHard = hard;
+        mColorScheme = color;
+
         HOUSE_WIDTH = this.getWidth()/5;
         houses[0] = new House(0, 0);
         houses[1] = new House(0, 0);
@@ -82,12 +92,25 @@ public class GameView extends View {
         mExplosionRadius = 50;
         mProjectileSize = 20;
         mMissileFrequency = 200;
+        mMissileMinFrequency = 50;
         mMissileCountdown = 20;
         mMissileSize = 15;
-        mMissileSpeed = 6;
+        mMissileSpeed = 5;
+        mMissileMaxSpeed = 8;
+        mMissileSpeedCountdown = 80;
         mProjectileSpeed = 10;
         mScore = 0;
+        mMisileSpeedUpTime = 1000;
 
+        // Hard mode values
+        if(mIsGameHard){
+            Log.i(TAG, "Hard mode");
+            mMissileSpeed = 6;
+            mMissileMaxSpeed = 16;
+            mMissileFrequency = 100;
+            mMissileMinFrequency = 10;
+            mMisileSpeedUpTime = 250;
+        }
 
         // For the toast, can remove later
         mContext = context;
@@ -169,19 +192,20 @@ public class GameView extends View {
                 if(p.getExplosionLifetime() <= 0) {
                     iterator.remove();
                 }else{
+                    int explosionSize = mExplosionRadius * (60 - p.getExplosionLifetime()) / 60;
                     mPaint.setColor(0xFFFF0084);
-                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius * (60 - p.getExplosionLifetime()) / 60, mPaint);
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), explosionSize , mPaint);
                     mPaint.setColor(0xFF0000FF);
-                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius * (60 - p.getExplosionLifetime()) / 60 *2/3, mPaint);
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), explosionSize *2/3, mPaint);
                     mPaint.setColor(0xFF08E300);
-                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius * (60 - p.getExplosionLifetime()) / 60 *1/3, mPaint);
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), explosionSize *1/3, mPaint);
                     p.setExplosionLifetime(p.getExplosionLifetime() - 1);
                     for (Iterator<Projectile> iteratorMissiles = mMissiles.iterator(); iteratorMissiles.hasNext();) {
                         Projectile missile = iteratorMissiles.next();
                         double xDif = p.getDestx() - missile.getX_pos();
                         double yDif = p.getDesty() - missile.getY_pos();
                         double distanceSquared = xDif * xDif + yDif * yDif;
-                        boolean collision = distanceSquared < (mExplosionRadius) * (mExplosionRadius);
+                        boolean collision = distanceSquared < ((explosionSize) * (explosionSize) + mExplosionRadius/12);
                         if(collision){
                             iteratorMissiles.remove();
                             mScore++;
@@ -207,18 +231,26 @@ public class GameView extends View {
             }
         }
 
-
+        //Speeds up missiles
+        if (mMissileSpeedCountdown <= 0){
+            if(mMissileSpeed < mMissileMaxSpeed) {
+                mMissileSpeed += 1;
+            }
+            mMissileSpeedCountdown = mMisileSpeedUpTime;
+        }
 
         // Creates new missiles every mMissileFrequency frames
         if (mMissileCountdown <= 0){
-            if(mMissileFrequency > 5) {
+            if(mMissileFrequency > mMissileMinFrequency) {
                 mMissileFrequency -= 2;
             }
             mMissileCountdown = mMissileFrequency;
-            mMissiles.add(new Projectile(randomWithRange(0, mScreenWidth), 0, randomWithRange(0, mScreenWidth), mGroundHeight, mMissileSpeed));
+            mMissiles.add(new Projectile(randomWithRange(0, mScreenWidth), 0, randomWithRange(0, mScreenWidth), mGroundHeight, randomWithRange(mMissileSpeed/2, mMissileSpeed)));
         }
+
         // Counts down by 1 every frame
         mMissileCountdown -= 1;
+        mMissileSpeedCountdown -=1;
 
         // Draws missiles using projectile objects
         for (Iterator<Projectile> iterator = mMissiles.iterator(); iterator.hasNext();) {
@@ -364,5 +396,6 @@ public class GameView extends View {
     public int getScore(){
         return mScore;
     }
+
 
 }
