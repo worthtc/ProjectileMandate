@@ -35,13 +35,18 @@ public class GameView extends View {
     private int mProjectileSize;
     private int mMissileFrequency;
     private int mMissileCountdown;
+    private int mMissileSpeedCountdown;
     private int mMissileSize;
     private int mGroundHeight;
     private int mScreenWidth;
     private int mMissileSpeed;
+    private int mMissileMaxSpeed;
     private int mProjectileSpeed;
     private int mScore;
     private int HOUSE_WIDTH;
+    private boolean mIsGameHard;
+    private boolean mColorScheme;
+
     private boolean mIsGameOver;
 
 
@@ -62,15 +67,18 @@ public class GameView extends View {
     private ArrayList<Missile> missilen = new ArrayList<>();
 
     public GameView(Context context){
-        this(context, null);
+        this(context, null, false, false);
         for(int i = 0; i < 100 ; i++) {
             createMissile();
             moveMissile();
         }
     }
 
-    public GameView(Context context, AttributeSet attrs){
+    public GameView(Context context, AttributeSet attrs, boolean hard , boolean color){
         super(context, attrs);
+        mIsGameHard = hard;
+        mColorScheme = color;
+
         HOUSE_WIDTH = this.getWidth()/5;
         houses[0] = new House(0, 0);
         houses[1] = new House(0, 0);
@@ -84,10 +92,19 @@ public class GameView extends View {
         mMissileFrequency = 200;
         mMissileCountdown = 20;
         mMissileSize = 15;
-        mMissileSpeed = 6;
+        mMissileSpeed = 5;
+        mMissileMaxSpeed = 8;
+        mMissileSpeedCountdown = 80;
         mProjectileSpeed = 10;
         mScore = 0;
 
+        // Hard mode values
+        if(mIsGameHard){
+            Log.i(TAG, "Missile ARRIVED");
+            mMissileSpeed = 6;
+            mMissileMaxSpeed = 16;
+            mMissileFrequency = 50;
+        }
 
         // For the toast, can remove later
         mContext = context;
@@ -207,7 +224,13 @@ public class GameView extends View {
             }
         }
 
-
+        //Speeds up missiles
+        if (mMissileSpeedCountdown <= 0){
+            if(mMissileSpeed < mMissileMaxSpeed) {
+                mMissileSpeed += 1;
+            }
+            mMissileSpeedCountdown = 80;
+        }
 
         // Creates new missiles every mMissileFrequency frames
         if (mMissileCountdown <= 0){
@@ -215,10 +238,12 @@ public class GameView extends View {
                 mMissileFrequency -= 2;
             }
             mMissileCountdown = mMissileFrequency;
-            mMissiles.add(new Projectile(randomWithRange(0, mScreenWidth), 0, randomWithRange(0, mScreenWidth), mGroundHeight, mMissileSpeed));
+            mMissiles.add(new Projectile(randomWithRange(0, mScreenWidth), 0, randomWithRange(0, mScreenWidth), mGroundHeight, randomWithRange(mMissileSpeed/2, mMissileSpeed)));
         }
+
         // Counts down by 1 every frame
         mMissileCountdown -= 1;
+        mMissileSpeedCountdown -=1;
 
         // Draws missiles using projectile objects
         for (Iterator<Projectile> iterator = mMissiles.iterator(); iterator.hasNext();) {
@@ -364,5 +389,6 @@ public class GameView extends View {
     public int getScore(){
         return mScore;
     }
+
 
 }

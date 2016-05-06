@@ -85,7 +85,7 @@ public class GameFragment extends Fragment {
 
 
         // Create the game view and add it to the game screen.
-        mGameView = new GameView(getContext());
+        mGameView = new GameView(getContext(), null, mIsGameHard, mColorScheme);
         mainView.addView(mGameView);
 
         return view;
@@ -105,7 +105,6 @@ public class GameFragment extends Fragment {
             @Override
             public void run() {
 
-                // **CALL CALCULATIONS FOR GAME OBJECTS HERE**
 
                 // The handler will tell the background thread to redraw the view.
                 mHandler.post(new Runnable() {
