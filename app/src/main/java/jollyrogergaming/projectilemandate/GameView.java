@@ -48,6 +48,7 @@ public class GameView extends View {
     private boolean mIsGameHard;
     private boolean mColorScheme;
     private int mMisileSpeedUpTime;
+    private float mFdegree;
 
     private boolean mIsGameOver;
 
@@ -101,6 +102,7 @@ public class GameView extends View {
         mProjectileSpeed = 10;
         mScore = 0;
         mMisileSpeedUpTime = 1000;
+        float mFdegree = 0;
 
         // Hard mode values
         if(mIsGameHard){
@@ -189,10 +191,12 @@ public class GameView extends View {
         double angle = Math.atan2(deltaY, deltaX);
         float a = (float) angle;
         double degree = (float)(a * 180)/3.14;
-        float fdegree = (float) degree;
+        if(mTouchY < mGroundHeight) {
+            mFdegree = (float) degree;
+        }
         //Log.d("Angle debug tag"," the angle is " + Float.toString(fdegree));
         canvas.save();
-        canvas.rotate(fdegree-90, this.getWidth() / 2,mGroundHeight);
+        canvas.rotate(mFdegree - 90, this.getWidth() / 2, mGroundHeight);
         canvas.drawRect((this.getWidth() / 2 - 7), mGroundHeight - 50, (this.getWidth() / 2 + 7), mGroundHeight, mPaint);
         canvas.restore();
         //Set color of Turret Base Exterior
@@ -424,7 +428,7 @@ public class GameView extends View {
             mTouchY = (int) current.y;
             //Log.i(TAG, action + " at x =" + current.x + ", y =" + current.y);
             //Log.i(TAG, "x = " + mTouchX + ", y = " + mTouchY);
-            if (mProjectiles.size() < mMaxProjectiles) {
+            if (mProjectiles.size() < mMaxProjectiles && mTouchY < mGroundHeight) {
                 mProjectiles.add(new Projectile(this.getWidth() / 2, mGroundHeight, mTouchX, mTouchY, mProjectileSpeed));
             }
         }
