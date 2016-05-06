@@ -35,13 +35,9 @@ public class LeaderBoardFragment extends Fragment {
     private SQLiteDatabase mDatabase;
     private ArrayList<Score> mScores;
     private TextView mScoresEmptyList;
-    //private RecyclerView mScoresRecyclerView;
-    private ScoreAdapter mAdapter;
     private TableLayout mTable;
     private boolean mColorScheme; //False with a light color scheme, True with a dark color scheme
     private boolean mIsGameHard;
-    private static final int TEXT_SIZE = 10; //Size for the text elements in dp
-    private static final int BAR_SIZE = 3; //Size for the dividing bars in dp
     public static final String EXTRA_COLOR_SCHEME = "jollyrogergaming.projectilemandate.color_scheme";
     public static final String EXTRA_IS_GAME_HARD = "jollyrogergaming.projectilemandate.is_game_easy";
     public static final String KEY_COLOR_SCHEMA = "color_scheme";
@@ -179,56 +175,6 @@ public class LeaderBoardFragment extends Fragment {
         return new ScoreCursorWrapper(cursor);
     }
 
-    /**
-     * Adapter for displaying Scores in the Recycler view
-     */
-    private class ScoreAdapter extends RecyclerView.Adapter<ScoreHolder>{
-        private ArrayList<Score> mScores;
-
-        public ScoreAdapter(ArrayList<Score> scores){
-            mScores = scores;
-        }
-
-        @Override
-        public ScoreHolder onCreateViewHolder(ViewGroup parent, int viewType){
-            LayoutInflater layoutInflater = LayoutInflater.from( getActivity() );
-            View view = layoutInflater.inflate(R.layout.list_item_score, parent, false);
-            return new ScoreHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(ScoreHolder holder, int position){
-            Score score = mScores.get(position);
-            holder.bindScore(score);
-        }
-
-        @Override
-        public int getItemCount(){
-            return mScores.size();
-        }
-    }
-
-    /**
-     * Class to hold each individual score in the RecyclerView
-     */
-    private class ScoreHolder extends RecyclerView.ViewHolder{
-        private TextView mTextUser;
-        private TextView mTextScore;
-        private Score mScore;
-
-        public ScoreHolder( View itemView ){
-            super(itemView);
-
-            mTextUser = (TextView) itemView.findViewById(R.id.text_user);
-            mTextScore = (TextView) itemView.findViewById(R.id.text_score);
-        }
-
-        public void bindScore(Score score){
-            mScore = score;
-            mTextUser.setText(mScore.getUser());
-            mTextScore.setText(((Integer)mScore.getScore()).toString());
-        }
-    }
 
     /**
      * Update the user interface, creating the adapter if it needs to be created. If there are no scores to be displayed, we display a message telling the user this
@@ -262,7 +208,6 @@ public class LeaderBoardFragment extends Fragment {
     }
 
     public void addTableRow( Score score, int position ){
-        final float scale = getResources().getDisplayMetrics().density; //Set scaling from dp to pixels
 
         TableRow row = new TableRow(getContext());
         row.setLayoutParams(new TableLayout.LayoutParams(
