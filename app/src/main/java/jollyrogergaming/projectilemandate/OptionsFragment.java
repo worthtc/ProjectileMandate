@@ -1,10 +1,13 @@
 package jollyrogergaming.projectilemandate;
 
+import android.app.TaskStackBuilder;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,6 +26,7 @@ public class OptionsFragment extends Fragment{
     private Button mEasyButton;
     private Button mHardButton;
     private Button mClearDatabaseButton;
+    private Button mConfirmButton;
     private RadioGroup mColorSchemeGroup;
     private RadioGroup mDifficultyGroup;
     private SQLiteDatabase mDatabase;
@@ -104,6 +108,15 @@ public class OptionsFragment extends Fragment{
             }
         });
 
+        mConfirmButton = (Button) view.findViewById(R.id.confirm_button);
+        mConfirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                storeResult();
+                getActivity().finish();
+            }
+        });
+
         if( mColorScheme ){
             mColorSchemeGroup.clearCheck();
             mColorSchemeGroup.check(R.id.dark_button);
@@ -142,6 +155,7 @@ public class OptionsFragment extends Fragment{
         savedInstanceState.putBoolean(KEY_COLOR_SCHEMA, mColorScheme);
         savedInstanceState.putBoolean(KEY_IS_GAME_HARD, mIsGameHard);
     }
+    
 
     @Override
     public void onDestroy(){

@@ -93,6 +93,7 @@ public class LeaderBoardFragment extends Fragment {
 
         mScores = new ArrayList<>();
         mDatabase = new ScoreBaseHelper(getActivity()).getReadableDatabase();
+        setHasOptionsMenu(true);
 
         mColorScheme = getArguments().getBoolean(KEY_COLOR_SCHEMA);
         mIsGameHard = getArguments().getBoolean(KEY_IS_GAME_HARD);
