@@ -164,9 +164,23 @@ public class GameView extends View {
 
         ;
 
-
+        //draws the cannon
         mPaint.setColor(0xFF000000);
-        canvas.drawRect(this.getWidth() / 2 - 7, mGroundHeight - 50, this.getWidth() / 2 + 7, mGroundHeight, mPaint);
+        //canvas.drawRect(this.getWidth() / 2 - 7, mGroundHeight - 50, this.getWidth() / 2 + 7, mGroundHeight, mPaint);
+
+        int deltaX= (this.getWidth() / 2) - mTouchX ;
+        int deltaY= mGroundHeight - mTouchY  ;
+        double angle = Math.atan2(deltaY, deltaX);
+        float a = (float) angle;
+        double degree = (float)(a * 180)/3.14;
+        float fdegree = (float) degree;
+        Log.d("Angle debug tag"," the angle is " + Float.toString(fdegree));
+        canvas.save();
+        canvas.rotate(fdegree-90, this.getWidth() / 2,mGroundHeight);
+        canvas.drawRect((this.getWidth() / 2 - 7), mGroundHeight - 50, (this.getWidth() / 2 + 7), mGroundHeight, mPaint);
+        canvas.restore();
+
+
 
         mPaint.setColor(0xFF00FFFF);
         canvas.drawCircle(this.getWidth() / 2, mGroundHeight, 30, mPaint);
@@ -260,9 +274,7 @@ public class GameView extends View {
                 iterator.remove();
                 // **Check Collision with houses here**
                 for(int i = 0; i < houses.length;i++) {
-                    /*if (p.getX_pos() == houses[i].houseX && p.getY_pos() == houses[i].houseY){
-                        houses[i].active = false;
-                    }*/
+
                     if((p.getX_pos() >= houses[i].houseX) && (p.getX_pos() <= (houses[i].houseX + HOUSE_WIDTH))){
                         houses[i].active = false;
                     }
@@ -294,7 +306,7 @@ public class GameView extends View {
         }
         if( !canGameContinue ){
             mIsGameOver = true;
-        }
+        } 
 
         //Log.d(TAG, "onSensorChanged() " + mLightLevel);
     }
