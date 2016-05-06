@@ -290,12 +290,6 @@ public class GameView extends View {
                         if(collision){
                             iteratorMissiles.remove();
                             mScore++;
-                            //Remove later
-                            CharSequence text = "Score: " + mScore;
-                            int duration = Toast.LENGTH_SHORT;
-                            Toast toast = Toast.makeText(mContext, text, duration);
-                            toast.show();
-                            //
                         }
                     }
                 }
