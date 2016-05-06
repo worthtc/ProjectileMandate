@@ -35,6 +35,7 @@ public class GameView extends View {
     private int mProjectileSize;
     private int mMissileFrequency;
     private int mMissileCountdown;
+    private int mMissileMinFrequency;
     private int mMissileSpeedCountdown;
     private int mMissileSize;
     private int mGroundHeight;
@@ -46,6 +47,7 @@ public class GameView extends View {
     private int HOUSE_WIDTH;
     private boolean mIsGameHard;
     private boolean mColorScheme;
+    private int mMisileSpeedUpTime;
 
     private boolean mIsGameOver;
 
@@ -90,6 +92,7 @@ public class GameView extends View {
         mExplosionRadius = 50;
         mProjectileSize = 20;
         mMissileFrequency = 200;
+        mMissileMinFrequency = 50;
         mMissileCountdown = 20;
         mMissileSize = 15;
         mMissileSpeed = 5;
@@ -97,13 +100,16 @@ public class GameView extends View {
         mMissileSpeedCountdown = 80;
         mProjectileSpeed = 10;
         mScore = 0;
+        mMisileSpeedUpTime = 1000;
 
         // Hard mode values
         if(mIsGameHard){
-            Log.i(TAG, "Missile ARRIVED");
+            Log.i(TAG, "Hard mode");
             mMissileSpeed = 6;
             mMissileMaxSpeed = 16;
-            mMissileFrequency = 50;
+            mMissileFrequency = 100;
+            mMissileMinFrequency = 10;
+            mMisileSpeedUpTime = 250;
         }
 
         // For the toast, can remove later
@@ -186,19 +192,20 @@ public class GameView extends View {
                 if(p.getExplosionLifetime() <= 0) {
                     iterator.remove();
                 }else{
+                    int explosionSize = mExplosionRadius * (60 - p.getExplosionLifetime()) / 60;
                     mPaint.setColor(0xFFFF0084);
-                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius * (60 - p.getExplosionLifetime()) / 60, mPaint);
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), explosionSize , mPaint);
                     mPaint.setColor(0xFF0000FF);
-                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius * (60 - p.getExplosionLifetime()) / 60 *2/3, mPaint);
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), explosionSize *2/3, mPaint);
                     mPaint.setColor(0xFF08E300);
-                    canvas.drawCircle(p.getDestx(), p.getDesty(), mExplosionRadius * (60 - p.getExplosionLifetime()) / 60 *1/3, mPaint);
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), explosionSize *1/3, mPaint);
                     p.setExplosionLifetime(p.getExplosionLifetime() - 1);
                     for (Iterator<Projectile> iteratorMissiles = mMissiles.iterator(); iteratorMissiles.hasNext();) {
                         Projectile missile = iteratorMissiles.next();
                         double xDif = p.getDestx() - missile.getX_pos();
                         double yDif = p.getDesty() - missile.getY_pos();
                         double distanceSquared = xDif * xDif + yDif * yDif;
-                        boolean collision = distanceSquared < (mExplosionRadius) * (mExplosionRadius);
+                        boolean collision = distanceSquared < ((explosionSize) * (explosionSize) + mExplosionRadius/12);
                         if(collision){
                             iteratorMissiles.remove();
                             mScore++;
@@ -229,12 +236,12 @@ public class GameView extends View {
             if(mMissileSpeed < mMissileMaxSpeed) {
                 mMissileSpeed += 1;
             }
-            mMissileSpeedCountdown = 80;
+            mMissileSpeedCountdown = mMisileSpeedUpTime;
         }
 
         // Creates new missiles every mMissileFrequency frames
         if (mMissileCountdown <= 0){
-            if(mMissileFrequency > 5) {
+            if(mMissileFrequency > mMissileMinFrequency) {
                 mMissileFrequency -= 2;
             }
             mMissileCountdown = mMissileFrequency;
