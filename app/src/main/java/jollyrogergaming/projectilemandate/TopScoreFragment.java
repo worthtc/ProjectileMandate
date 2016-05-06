@@ -30,6 +30,7 @@ import jollyrogergaming.projectilemandate.database.ScoreDbSchema;
 public class TopScoreFragment extends DialogFragment implements DialogInterface.OnCancelListener {
     private static final String ARG_SCORE = "score";
     private static final String DIALOG_RESTART_GAME = "DialogRestartGame";
+    private static final int MAX_NAME_LENGTH = 25;
     private String mText;
     private EditText mUserName;
     private int mScore;
@@ -120,7 +121,7 @@ public class TopScoreFragment extends DialogFragment implements DialogInterface.
                         else{
                             Log.d(TAG, "NULL");
                         }*/
-                        if( !TextUtils.isEmpty(mUserName.getText()) ){
+                        if( !TextUtils.isEmpty(mUserName.getText()) && mUserName.getText().toString().length() < MAX_NAME_LENGTH ){
                             ContentValues values = getContentValues(mUserName.getText().toString(), mScore);
                             mDatabase.insert(ScoreDbSchema.ScoreTable.NAME, null, values);
                             mDatabase.close();
@@ -128,6 +129,9 @@ public class TopScoreFragment extends DialogFragment implements DialogInterface.
                             RestartGameFragment restartDialog = RestartGameFragment.newInstance();
                             restartDialog.show(manager, DIALOG_RESTART_GAME);
                             mDialog.dismiss();
+                        }
+                        else if( mUserName.getText().toString().length() > MAX_NAME_LENGTH ){
+                            Toast.makeText(getContext(), "Sorry, your name was too long. Please enter a name of less than " + MAX_NAME_LENGTH + " Characters", Toast.LENGTH_LONG).show();
                         }
                         else{
                            Toast.makeText(getContext(), "Please enter your name before submitting your score.", Toast.LENGTH_LONG).show();
