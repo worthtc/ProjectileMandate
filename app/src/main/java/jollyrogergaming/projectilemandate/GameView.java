@@ -195,7 +195,6 @@ public class GameView extends View {
         canvas.rotate(fdegree-90, this.getWidth() / 2,mGroundHeight);
         canvas.drawRect((this.getWidth() / 2 - 7), mGroundHeight - 50, (this.getWidth() / 2 + 7), mGroundHeight, mPaint);
         canvas.restore();
-        canvas.drawRect(this.getWidth() / 2 - 7, mGroundHeight - 50, this.getWidth() / 2 + 7, mGroundHeight, mPaint);
         //Set color of Turret Base Exterior
         if( mColorScheme ) {
             mPaint.setColor(0xFF00FFFF);//Dark Color Scheme
