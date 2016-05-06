@@ -32,6 +32,7 @@ public class GameFragment extends Fragment {
     private TextView mTestTextTwo;
     private boolean mColorScheme; //False with a light color scheme, True with a dark color scheme
     private boolean mIsGameHard;
+    private boolean mFlag; //Set when we are showing the dialogs so they are not shown twice
 
 
     public static final String KEY_COLOR_SCHEMA = "color_scheme";
@@ -72,7 +73,7 @@ public class GameFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_game, container, false);
         //setContentView(R.layout.activity_game);
-
+        mFlag = false;
         mColorScheme = getArguments().getBoolean(KEY_COLOR_SCHEMA);
         mIsGameHard = getArguments().getBoolean(KEY_IS_GAME_HARD);
 
@@ -86,10 +87,6 @@ public class GameFragment extends Fragment {
         // Create the game view and add it to the game screen.
         mGameView = new GameView(getContext());
         mainView.addView(mGameView);
-
-        Log.d(TAG, ((Boolean) mColorScheme).toString());
-        Log.d(TAG, ((Boolean) mIsGameHard).toString());
-
 
         return view;
     }
@@ -114,10 +111,12 @@ public class GameFragment extends Fragment {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if( mGameView.isGameOver()){
+                        if( mGameView.isGameOver() && !mFlag){
+                            Log.d(TAG, "TEST");
                             FragmentManager manager = getFragmentManager();
                             TopScoreFragment dialog = TopScoreFragment.newInstance(mGameView.getScore());
                             dialog.show(manager, DIALOG_TOP_SCORE);
+                            mFlag = true;
                             mTimerTask.cancel();
                         }
                         else{

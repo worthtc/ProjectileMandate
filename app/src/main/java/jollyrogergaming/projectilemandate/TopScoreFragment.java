@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -23,13 +24,14 @@ import jollyrogergaming.projectilemandate.database.ScoreDbSchema;
 /**
  * Dialog to ask the user if they want to save their score to the database or not
  */
-public class TopScoreFragment extends DialogFragment {
+public class TopScoreFragment extends DialogFragment implements DialogInterface.OnCancelListener {
     private static final String ARG_SCORE = "score";
     private static final String DIALOG_RESTART_GAME = "DialogRestartGame";
     private String mText;
     private EditText mUserName;
     private int mScore;
     private SQLiteDatabase mDatabase;
+    private static final String TAG = "TopScoreFragment";
 
     /**
      * Return an instance of this Fragment with the correct arguments
@@ -75,7 +77,7 @@ public class TopScoreFragment extends DialogFragment {
         TextView textView = (TextView) v.findViewById(R.id.score_text);
         textView.setText(mText);
         mUserName = (EditText) v.findViewById(R.id.player_name);
-        return new AlertDialog.Builder(getActivity())
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(R.string.score_dialog_title)
                 .setPositiveButton(R.string.score_dialog_positive, new DialogInterface.OnClickListener() {
@@ -106,5 +108,6 @@ public class TopScoreFragment extends DialogFragment {
                     }
                 })
                 .create();
+        return dialog;
     }
 }
