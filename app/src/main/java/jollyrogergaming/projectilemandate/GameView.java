@@ -156,18 +156,34 @@ public class GameView extends View {
         //Log.d(TAG, "onDraw(); X = " + mX + " Y = " + mY);
 
         //Draw background, feel free to delete or change color. Here just in case we want a background color.
-        canvas.drawARGB(255, 88, 42, 114);
-
+        if( mColorScheme ) {
+            canvas.drawARGB(255, 88, 42, 114); //Dark Color Scheme
+        }
+        else{
+            canvas.drawARGB(0xFF, 0x99, 0xCC, 0xFF);//Light Color Scheme
+        }
         //Draw a circle at user touch
 //        mPaint.setColor(0xFFFFFFFF);
 //        canvas.drawCircle(mTouchX, mTouchY, 50, mPaint);
 
         ;
 
-        //draws the cannon
-        mPaint.setColor(0xFF000000);
-        //canvas.drawRect(this.getWidth() / 2 - 7, mGroundHeight - 50, this.getWidth() / 2 + 7, mGroundHeight, mPaint);
 
+
+
+
+
+
+
+        mPaint.setColor(0xFF00FFFF);
+
+        //Set color of Turret Gun
+        if( mColorScheme ) {
+            mPaint.setColor(0xFF000000);//Dark Color Scheme
+        }
+        else{
+            mPaint.setColor(0xFF000000);//Light Color Scheme
+        }
         int deltaX= (this.getWidth() / 2) - mTouchX ;
         int deltaY= mGroundHeight - mTouchY  ;
         double angle = Math.atan2(deltaY, deltaX);
@@ -179,20 +195,50 @@ public class GameView extends View {
         canvas.rotate(fdegree-90, this.getWidth() / 2,mGroundHeight);
         canvas.drawRect((this.getWidth() / 2 - 7), mGroundHeight - 50, (this.getWidth() / 2 + 7), mGroundHeight, mPaint);
         canvas.restore();
+        canvas.drawRect(this.getWidth() / 2 - 7, mGroundHeight - 50, this.getWidth() / 2 + 7, mGroundHeight, mPaint);
+        //Set color of Turret Base Exterior
+        if( mColorScheme ) {
+            mPaint.setColor(0xFF00FFFF);//Dark Color Scheme
+        }
+        else{
+            mPaint.setColor(0xFF00FFFF);//Light Color Scheme
+        }
 
-
-
-        mPaint.setColor(0xFF00FFFF);
         canvas.drawCircle(this.getWidth() / 2, mGroundHeight, 30, mPaint);
-        mPaint.setColor(0xFF0000FF);
+        //Set color of Turret Base Interior
+        if( mColorScheme ) {
+            mPaint.setColor(0xFF0000FF);//Dark Color Scheme
+        }
+        else{
+            mPaint.setColor(0xFF0000FF);//Light Color Scheme
+        }
         canvas.drawCircle(this.getWidth() / 2, mGroundHeight, 15, mPaint);
-        mPaint.setColor(0xFF00FF00);
+        //Set color of Ground Exterior
+        if( mColorScheme ) {
+            mPaint.setColor(0xFF00FF00);//Dark Color Scheme
+        }
+        else{
+            mPaint.setColor(0xFF99FFCC);;//Light Color Scheme
+        }
         canvas.drawRect(0, mGroundHeight, this.getWidth(), this.getHeight(), mPaint);
-        mPaint.setColor(0xFF000000);
+        //Set color of Ground Interior
+        if( mColorScheme ) {
+            mPaint.setColor(0xFF000000);//Dark Color Scheme
+        }
+        else{
+            mPaint.setColor(0xFF669999);//Light Color Scheme
+        }
         canvas.drawRect(20, mGroundHeight+20, this.getWidth()-mScreenWidth/20, this.getHeight()-20, mPaint);
 
         // Draws houses
-        mPaint.setColor(0xFFFF0000);
+
+        //Set color of House Exterior
+        if( mColorScheme ) {
+            mPaint.setColor(0xFFFF0000);//Dark Color Scheme
+        }
+        else{
+            mPaint.setColor(0xFFFF0000);//Light Color Scheme 000066
+        }
         for(int i=0; i<houses.length; i++) {
             if(houses[i].active) {
                 houses[i].draw(canvas, mPaint);
@@ -207,11 +253,29 @@ public class GameView extends View {
                     iterator.remove();
                 }else{
                     int explosionSize = mExplosionRadius * (60 - p.getExplosionLifetime()) / 60;
-                    mPaint.setColor(0xFFFF0084);
-                    canvas.drawCircle(p.getDestx(), p.getDesty(), explosionSize , mPaint);
-                    mPaint.setColor(0xFF0000FF);
-                    canvas.drawCircle(p.getDestx(), p.getDesty(), explosionSize *2/3, mPaint);
-                    mPaint.setColor(0xFF08E300);
+                    //Set Color of Explosion Exterior
+                    if( mColorScheme ) {
+                        mPaint.setColor(0xFFFF0084);//Dark Color Scheme
+                    }
+                    else{
+                        mPaint.setColor(0xFF669999);//Light Color Scheme
+                    }
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), explosionSize, mPaint);
+                    //Set Color of Explosion Middle
+                    if( mColorScheme ) {
+                        mPaint.setColor(0xFF0000FF);//Dark Color Scheme
+                    }
+                    else{
+                        mPaint.setColor(0xFFFFFFFF);//Light Color Scheme
+                    }
+                    canvas.drawCircle(p.getDestx(), p.getDesty(), explosionSize * 2 / 3, mPaint);
+                    //Set Color of Explosion Interior
+                    if( mColorScheme ) {
+                        mPaint.setColor(0xFF08E300);//Dark Color Scheme
+                    }
+                    else{
+                        mPaint.setColor(0xFF000000);//Light Color Scheme
+                    }
                     canvas.drawCircle(p.getDestx(), p.getDesty(), explosionSize *1/3, mPaint);
                     p.setExplosionLifetime(p.getExplosionLifetime() - 1);
                     for (Iterator<Projectile> iteratorMissiles = mMissiles.iterator(); iteratorMissiles.hasNext();) {
@@ -234,10 +298,22 @@ public class GameView extends View {
                 }
 
             }else {
-                mPaint.setColor(0xFF00FF00);
+                //Set Color of Projectile Exterior
+                if( mColorScheme ) {
+                    mPaint.setColor(0xFF00FF00); //Dark Color Scheme
+                }
+                else{
+                    mPaint.setColor(0xFF00FF00);//Light Color Scheme
+                }
                 //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mProjectileSize, mPaint);
-                mPaint.setColor(0xFFFFFFFF);
+                //Set Color of Player Projectile Interior
+                if( mColorScheme ) {
+                    mPaint.setColor(0xFFFFFFFF); //Dark Color Scheme
+                }
+                else{
+                    mPaint.setColor(0xFF000000);//Light Color Scheme
+                }
                 //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mProjectileSize/2, mPaint);
                 p.calcNewPos();
@@ -286,11 +362,23 @@ public class GameView extends View {
                     }
                 }
             }else {
-                mPaint.setColor(0xFFF7F702);
+                //Set Color of Enemy Missile Exterior
+                if( mColorScheme ) {
+                    mPaint.setColor(0xFFF7F702); //Dark Color Scheme
+                }
+                else{
+                    mPaint.setColor(0xFF996633);//Light Color Scheme
+                }
                 //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mMissileSize, mPaint);
                 Paint whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                whitePaint.setColor(0xFFFF0000);
+                //Set Color Of Enemy Missile Interior
+                if( mColorScheme ) {
+                    whitePaint.setColor(0xFFFF0000); //Dark Color Scheme
+                }
+                else{
+                    whitePaint.setColor(0xFFFFFFFF); //Light Color Scheme
+                }
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mMissileSize-mMissileSize/3, whitePaint);
                 p.calcNewPos();
                 //Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
@@ -359,7 +447,13 @@ public class GameView extends View {
         public void draw(Canvas canvas, Paint paint) {
             canvas.drawRect(this.houseX, this.houseY - 30, this.houseX + HOUSE_WIDTH, this.houseY, paint);
             Paint whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            whitePaint.setColor(0xFFFFFFFF);
+            //Set Color Of House Interior
+            if( mColorScheme ) {
+                whitePaint.setColor(0xFFFFFFFF); //Dark Color Scheme
+            }
+            else{
+                whitePaint.setColor(0xFF000000);//Light Color Scheme
+            }
             canvas.drawRect(this.houseX+10, this.houseY - 20, this.houseX + HOUSE_WIDTH - 10, this.houseY, whitePaint);
         }
 

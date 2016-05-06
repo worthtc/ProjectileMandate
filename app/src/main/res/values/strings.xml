@@ -22,4 +22,7 @@
     <string name="restart_game_title">Game Over!</string>
     <string name="restart_game_dialog_positive">Yes</string>
     <string name="restart_game_dialog_negative">No</string>
+    <string name="index_col">Place</string>
+    <string name="name_col">Player Name</string>
+    <string name="score_col">Score</string>
 </resources>
