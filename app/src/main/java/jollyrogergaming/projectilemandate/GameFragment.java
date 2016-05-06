@@ -13,11 +13,15 @@ import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,6 +43,8 @@ public class GameFragment extends Fragment {
     private boolean mIsGameHard;
     private boolean mFlag; //Set when we are showing the dialogs so they are not shown twice
     private SQLiteDatabase mDatabase;
+    private int mScore;
+    private TextView mScoreView;
 
 
     public static final String KEY_COLOR_SCHEMA = "color_scheme";
@@ -84,16 +90,27 @@ public class GameFragment extends Fragment {
         mColorScheme = getArguments().getBoolean(KEY_COLOR_SCHEMA);
         mIsGameHard = getArguments().getBoolean(KEY_IS_GAME_HARD);
 
+        mScore = 0;
 
         //Main screen
         FrameLayout mainView = (FrameLayout) view.findViewById(R.id.game_view);
 
+
+        mScoreView = new TextView(getActivity());
+        mScoreView.setGravity(Gravity.CENTER_HORIZONTAL);
+        mScoreView.setTextSize(22);
+        mScoreView.setText("Score : " + mScore);
+
+        RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        relativeParams.setMargins(100, 100, 100, 100);
 
 
 
         // Create the game view and add it to the game screen.
         mGameView = new GameView(getContext(), null, mIsGameHard, mColorScheme);
         mainView.addView(mGameView);
+        mainView.addView(mScoreView);
 
         return view;
     }
@@ -149,6 +166,9 @@ public class GameFragment extends Fragment {
                             mFlag = true;
                         }
                         else{
+
+                            mScore = mGameView.getScore();
+                            mScoreView.setText("Score: " + mScore);
                             mGameView.invalidate();
                         }
                     }
@@ -163,6 +183,7 @@ public class GameFragment extends Fragment {
 
         super.onResume();
     }
+
 
     private ScoreCursorWrapper queryScores( String whereClause, String[] whereArgs){
         Cursor cursor = mDatabase.query(
