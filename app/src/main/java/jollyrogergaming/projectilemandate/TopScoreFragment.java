@@ -91,7 +91,6 @@ public class TopScoreFragment extends DialogFragment {
                         FragmentManager manager = getFragmentManager();
                         RestartGameFragment restartDialog = RestartGameFragment.newInstance();
                         restartDialog.show(manager, DIALOG_RESTART_GAME);
-
                     }
                 })
                 .setNegativeButton(R.string.score_dialog_negative, new DialogInterface.OnClickListener() {

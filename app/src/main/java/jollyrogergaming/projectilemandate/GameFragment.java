@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,9 @@ public class GameFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_game, container, false);
         //setContentView(R.layout.activity_game);
 
+        mColorScheme = getArguments().getBoolean(KEY_COLOR_SCHEMA);
+        mIsGameHard = getArguments().getBoolean(KEY_IS_GAME_HARD);
+
 
         //Main screen
         FrameLayout mainView = (FrameLayout) view.findViewById(R.id.game_view);
@@ -82,6 +86,10 @@ public class GameFragment extends Fragment {
         // Create the game view and add it to the game screen.
         mGameView = new GameView(getContext());
         mainView.addView(mGameView);
+
+        Log.d(TAG, ((Boolean) mColorScheme).toString());
+        Log.d(TAG, ((Boolean) mIsGameHard).toString());
+
 
         return view;
     }
@@ -107,12 +115,14 @@ public class GameFragment extends Fragment {
                     @Override
                     public void run() {
                         if( mGameView.isGameOver()){
-                            mTimerTask.cancel();
                             FragmentManager manager = getFragmentManager();
                             TopScoreFragment dialog = TopScoreFragment.newInstance(mGameView.getScore());
                             dialog.show(manager, DIALOG_TOP_SCORE);
+                            mTimerTask.cancel();
                         }
-                        mGameView.invalidate();
+                        else{
+                            mGameView.invalidate();
+                        }
                     }
                 });
             }

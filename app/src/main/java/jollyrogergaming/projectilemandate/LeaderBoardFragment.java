@@ -1,11 +1,14 @@
 package jollyrogergaming.projectilemandate;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +32,23 @@ public class LeaderBoardFragment extends Fragment {
     private TextView mScoresEmptyList;
     private RecyclerView mScoresRecyclerView;
     private ScoreAdapter mAdapter;
+    private boolean mColorScheme; //False with a light color scheme, True with a dark color scheme
+    private boolean mIsGameHard;
+    public static final String EXTRA_COLOR_SCHEME = "jollyrogergaming.projectilemandate.color_scheme";
+    public static final String EXTRA_IS_GAME_HARD = "jollyrogergaming.projectilemandate.is_game_easy";
+    public static final String KEY_COLOR_SCHEMA = "color_scheme";
+    public static final String KEY_IS_GAME_HARD = "is_game_easy";
+    public static final String TAG = "LeaderBoardFragment";
+
+    public static LeaderBoardFragment newInstance(boolean colorScheme, boolean isGameHard){
+        Bundle args = new Bundle();
+        args.putBoolean(KEY_COLOR_SCHEMA, colorScheme);
+        args.putBoolean(KEY_IS_GAME_HARD, isGameHard);
+
+        LeaderBoardFragment fragment = new LeaderBoardFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     /*@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +90,12 @@ public class LeaderBoardFragment extends Fragment {
      * @return The view that was created
      */
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ){
-        View view = inflater.inflate(R.layout.fragment_leader_board, container, false);
+
         mScores = new ArrayList<>();
         mDatabase = new ScoreBaseHelper(getActivity()).getReadableDatabase();
+
+        mColorScheme = getArguments().getBoolean(KEY_COLOR_SCHEMA);
+        mIsGameHard = getArguments().getBoolean(KEY_IS_GAME_HARD);
 
         ScoreCursorWrapper cursor = queryScores(null, null);
 
@@ -86,6 +109,11 @@ public class LeaderBoardFragment extends Fragment {
         } finally{
             cursor.close();
         }
+
+        Log.d(TAG, ((Boolean) mColorScheme).toString());
+        Log.d(TAG, ((Boolean) mIsGameHard).toString());
+
+        View view = inflater.inflate(R.layout.fragment_leader_board, container, false);
 
         mScoresEmptyList = (TextView) view.findViewById(R.id.empty_list_view);
         mScoresRecyclerView = (RecyclerView) view.findViewById(R.id.score_recycler_view);

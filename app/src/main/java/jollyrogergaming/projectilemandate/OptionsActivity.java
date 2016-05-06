@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -24,8 +25,25 @@ public class OptionsActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment createFragment(){
-        mColorScheme = getIntent().getBooleanExtra(EXTRA_COLOR_SCHEME, false);
-        mIsGameHard = getIntent().getBooleanExtra(EXTRA_IS_GAME_HARD, false);
+        //mColorScheme = getIntent().getBooleanExtra(EXTRA_COLOR_SCHEME, false);
+        //mIsGameHard = getIntent().getBooleanExtra(EXTRA_IS_GAME_HARD, false);
         return OptionsFragment.newInstance(mColorScheme, mIsGameHard);
     }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        mColorScheme = getIntent().getBooleanExtra(EXTRA_COLOR_SCHEME, false);
+        mIsGameHard = getIntent().getBooleanExtra(EXTRA_IS_GAME_HARD, false);
+
+        if( mColorScheme ){
+            setTheme(android.R.style.Theme_Holo_NoActionBar);
+        }
+        else{
+            setTheme(android.R.style.Theme_Holo_Light_NoActionBar);
+        }
+        super.onCreate(savedInstanceState);
+
+    }
+
 }

@@ -3,6 +3,7 @@ package jollyrogergaming.projectilemandate;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,11 +25,35 @@ public class MainActivity extends SingleFragmentActivity {
     private static final int REQUEST_CODE_OPTIONS = 0;
 
     @Override
-    protected Fragment createFragment(){
-        mColorScheme = getIntent().getBooleanExtra(EXTRA_COLOR_SCHEME, false);
-        mIsGameHard = getIntent().getBooleanExtra(EXTRA_IS_GAME_HARD, false);
-        return MainFragment.newInstance(false, false);
+    protected Fragment createFragment() {
+        return MainFragment.newInstance(mColorScheme, mIsGameHard);
     }
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        //setTheme(android.R.style.Theme_Black);
+        mColorScheme = getIntent().getBooleanExtra(EXTRA_COLOR_SCHEME, false);
+        mIsGameHard = getIntent().getBooleanExtra(EXTRA_IS_GAME_HARD, false);
+        if( mColorScheme ) {
+            setTheme(android.R.style.Theme_Holo_NoActionBar);
+        }
+        else{
+            setTheme(android.R.style.Theme_Holo_Light_NoActionBar);
+        }
+        super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_fragment);
+
+        setContentView(getLayoutResId());
+        /*
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+
+        if(fragment == null){
+            fragment = createFragment();
+            fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+        }
+        */
+    }
 
 }

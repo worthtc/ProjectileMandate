@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class MainFragment extends Fragment {
     public static final String EXTRA_IS_GAME_HARD = "jollyrogergaming.projectilemandate.is_game_easy";
     public static final String KEY_COLOR_SCHEMA = "color_scheme";
     public static final String KEY_IS_GAME_HARD = "is_game_easy";
+    public static final String TAG = "MainFragment";
     private static final int REQUEST_CODE_LEADERBOARD = 2;
     private static final int REQUEST_CODE_GAME = 1;
     private static final int REQUEST_CODE_OPTIONS = 0;
@@ -44,6 +46,9 @@ public class MainFragment extends Fragment {
     @Override
     //protected void onCreate(Bundle savedInstanceState) {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ){
+
+        mColorScheme = getArguments().getBoolean(KEY_COLOR_SCHEMA);
+        mIsGameHard = getArguments().getBoolean(KEY_IS_GAME_HARD);
 
         //setContentView(R.layout.activity_main);
         View view = inflater.inflate(R.layout.activity_main, container, false);
@@ -93,6 +98,9 @@ public class MainFragment extends Fragment {
             mColorScheme = savedInstanceState.getBoolean(KEY_COLOR_SCHEMA);
             mIsGameHard = savedInstanceState.getBoolean(KEY_IS_GAME_HARD);
         }
+
+        getActivity().setTheme(android.R.style.Theme_Black);
+
         return view;
     }
 
@@ -118,6 +126,12 @@ public class MainFragment extends Fragment {
         if( requestCode == REQUEST_CODE_OPTIONS){
             mColorScheme = data.getBooleanExtra(EXTRA_COLOR_SCHEME, false);
             mIsGameHard = data.getBooleanExtra(EXTRA_IS_GAME_HARD, false);
+            Intent i = getActivity().getIntent();
+            i.putExtra(EXTRA_COLOR_SCHEME, mColorScheme);
+            i.putExtra(EXTRA_IS_GAME_HARD, mIsGameHard);
+            //Don't think that this is considered good code, but oh well
+            getActivity().finish();
+            startActivity(i);
         }
         else if( requestCode == REQUEST_CODE_LEADERBOARD){
 

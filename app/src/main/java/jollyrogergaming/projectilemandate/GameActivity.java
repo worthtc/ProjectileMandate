@@ -34,8 +34,6 @@ public class GameActivity extends SingleFragmentActivity implements RestartGameF
 
     @Override
     protected Fragment createFragment(){
-        mColorScheme = getIntent().getBooleanExtra(EXTRA_COLOR_SCHEME, false);
-        mIsGameHard = getIntent().getBooleanExtra(EXTRA_IS_GAME_HARD, false);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
@@ -49,5 +47,20 @@ public class GameActivity extends SingleFragmentActivity implements RestartGameF
 
         fragment = createFragment();
         fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        //setTheme(android.R.style.Theme_Black);
+        mColorScheme = getIntent().getBooleanExtra(EXTRA_COLOR_SCHEME, false);
+        mIsGameHard = getIntent().getBooleanExtra(EXTRA_IS_GAME_HARD, false);
+        if( mColorScheme ){
+            setTheme(android.R.style.Theme_Holo_NoActionBar_Fullscreen);
+        }
+        else{
+            setTheme(android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen);
+        }
+        super.onCreate(savedInstanceState);
+
     }
 }

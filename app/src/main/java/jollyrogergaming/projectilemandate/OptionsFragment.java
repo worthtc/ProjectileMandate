@@ -54,6 +54,9 @@ public class OptionsFragment extends Fragment{
         View view = inflater.inflate(R.layout.activity_options, container, false);
         mDatabase = new ScoreBaseHelper(getContext()).getWritableDatabase();
 
+        mColorScheme = getArguments().getBoolean(KEY_COLOR_SCHEMA);
+        mIsGameHard = getArguments().getBoolean(KEY_IS_GAME_HARD);
+
         mColorSchemeGroup = (RadioGroup) view.findViewById(R.id.color_scheme_group);
         mDifficultyGroup = (RadioGroup) view.findViewById(R.id.difficulty_group);
 
@@ -102,9 +105,11 @@ public class OptionsFragment extends Fragment{
         });
 
         if( mColorScheme ){
+            mColorSchemeGroup.clearCheck();
             mColorSchemeGroup.check(R.id.dark_button);
         }
         else {
+            mColorSchemeGroup.clearCheck();
             mColorSchemeGroup.check(R.id.light_button);
         }
 
