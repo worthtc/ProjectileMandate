@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -22,6 +24,9 @@ import java.util.TimerTask;
 
 import jollyrogergaming.projectilemandate.GameView;
 import jollyrogergaming.projectilemandate.R;
+import jollyrogergaming.projectilemandate.database.ScoreBaseHelper;
+import jollyrogergaming.projectilemandate.database.ScoreCursorWrapper;
+import jollyrogergaming.projectilemandate.database.ScoreDbSchema;
 
 /**
  * Created by Trevor on 4/10/2016.
@@ -33,6 +38,7 @@ public class GameFragment extends Fragment {
     private boolean mColorScheme; //False with a light color scheme, True with a dark color scheme
     private boolean mIsGameHard;
     private boolean mFlag; //Set when we are showing the dialogs so they are not shown twice
+    private SQLiteDatabase mDatabase;
 
 
     public static final String KEY_COLOR_SCHEMA = "color_scheme";
@@ -72,6 +78,7 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ){
 
         View view = inflater.inflate(R.layout.activity_game, container, false);
+        mDatabase = new ScoreBaseHelper(getContext()).getReadableDatabase();
         //setContentView(R.layout.activity_game);
         mFlag = false;
         mColorScheme = getArguments().getBoolean(KEY_COLOR_SCHEMA);
@@ -111,12 +118,33 @@ public class GameFragment extends Fragment {
                     @Override
                     public void run() {
                         if( mGameView.isGameOver() && !mFlag){
-                            Log.d(TAG, "TEST");
-                            FragmentManager manager = getFragmentManager();
-                            TopScoreFragment dialog = TopScoreFragment.newInstance(mGameView.getScore());
-                            dialog.show(manager, DIALOG_TOP_SCORE);
-                            mFlag = true;
                             mTimerTask.cancel();
+                            boolean isScoreTopTen = false;
+                            ScoreCursorWrapper cursor = queryScores(null, null);
+
+                            //Read all of the rows of the database table and see if the player has one of the top ten scores
+                            try{
+                                cursor.moveToFirst();
+                                while(!cursor.isAfterLast()){
+                                    if( mGameView.getScore() > cursor.getScore().getScore()){
+                                        isScoreTopTen = true;
+                                        break;
+                                    }
+                                    cursor.moveToNext();
+                                }
+                            } finally{
+                                cursor.close();
+                            }
+                            FragmentManager manager = getFragmentManager();
+                            if( isScoreTopTen ) {
+                                TopScoreFragment dialog = TopScoreFragment.newInstance(mGameView.getScore());
+                                dialog.show(manager, DIALOG_TOP_SCORE);
+                            }
+                            else{
+                                RestartGameFragment dialog = RestartGameFragment.newInstance();
+                                dialog.show(manager, DIALOG_RESTART_GAME);
+                            }
+                            mFlag = true;
                         }
                         else{
                             mGameView.invalidate();
@@ -132,6 +160,20 @@ public class GameFragment extends Fragment {
                 10);    // time (ms) between successive task executions
 
         super.onResume();
+    }
+
+    private ScoreCursorWrapper queryScores( String whereClause, String[] whereArgs){
+        Cursor cursor = mDatabase.query(
+                ScoreDbSchema.ScoreTable.NAME,
+                null, // Columns - null selects all columns
+                whereClause,
+                whereArgs,
+                null, // groupBy
+                null, // having
+                ScoreDbSchema.ScoreTable.Cols.SCORE + " DESC", "10" // orderBy
+        );
+
+        return new ScoreCursorWrapper(cursor);
     }
 
 }

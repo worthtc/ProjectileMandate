@@ -12,7 +12,7 @@
     <string name="hard_button">Hard</string>
     <string name="clear_database_button">Clear Database</string>
     <string name="confirm_button">Confirm Changes</string>
-    <string name="score_dialog">Your score: %1$d! Would you like to submit your score to the database?</string>
+    <string name="score_dialog">Congratulations! Your score of %1$d was one of the ten best scores! Would you like to submit your score to the database?</string>
     <string name="score_dialog_title">Top Score!</string>
     <string name="score_dialog_positive">Submit</string>
     <string name="score_dialog_negative">Nah</string>
