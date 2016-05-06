@@ -8,11 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import jollyrogergaming.projectilemandate.database.ScoreBaseHelper;
 import jollyrogergaming.projectilemandate.database.ScoreDbSchema;
@@ -32,6 +35,7 @@ public class TopScoreFragment extends DialogFragment implements DialogInterface.
     private int mScore;
     private SQLiteDatabase mDatabase;
     private static final String TAG = "TopScoreFragment";
+    private AlertDialog mDialog;
 
     /**
      * Return an instance of this Fragment with the correct arguments
@@ -77,24 +81,10 @@ public class TopScoreFragment extends DialogFragment implements DialogInterface.
         TextView textView = (TextView) v.findViewById(R.id.score_text);
         textView.setText(mText);
         mUserName = (EditText) v.findViewById(R.id.player_name);
-        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+        mDialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(R.string.score_dialog_title)
-                .setPositiveButton(R.string.score_dialog_positive, new DialogInterface.OnClickListener() {
-                    @Override
-                    /**
-                     * Insert the player's name and score into the dabase
-                     */
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Submit to database
-                        ContentValues values = getContentValues(mUserName.getText().toString(), mScore);
-                        mDatabase.insert(ScoreDbSchema.ScoreTable.NAME, null, values);
-                        mDatabase.close();
-                        FragmentManager manager = getFragmentManager();
-                        RestartGameFragment restartDialog = RestartGameFragment.newInstance();
-                        restartDialog.show(manager, DIALOG_RESTART_GAME);
-                    }
-                })
+                .setPositiveButton(R.string.score_dialog_positive, null)
                 .setNegativeButton(R.string.score_dialog_negative, new DialogInterface.OnClickListener() {
                     @Override
                     /**
@@ -108,6 +98,44 @@ public class TopScoreFragment extends DialogFragment implements DialogInterface.
                     }
                 })
                 .create();
-        return dialog;
+        /**
+         * Set positive button to Insert the player's name and score into the database.
+         */
+        mDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button pos_button = mDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pos_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        /*
+                        if( mUserName != null ) {
+                            Log.d(TAG, "TEST: /" + mUserName.getText().toString() + "/");
+                            Log.d(TAG, ((Boolean) (mUserName.getText().toString() == "")).toString());
+                            Log.d(TAG, ((Boolean) (mUserName.getText().toString() == null)).toString());
+                            Log.d(TAG, ((Boolean) (TextUtils.isEmpty(mUserName.getText()))).toString());
+                            Log.d(TAG, mUserName.toString());
+                            Log.d(TAG, mUserName.getText().toString());
+                        }
+                        else{
+                            Log.d(TAG, "NULL");
+                        }*/
+                        if( !TextUtils.isEmpty(mUserName.getText()) ){
+                            ContentValues values = getContentValues(mUserName.getText().toString(), mScore);
+                            mDatabase.insert(ScoreDbSchema.ScoreTable.NAME, null, values);
+                            mDatabase.close();
+                            FragmentManager manager = getFragmentManager();
+                            RestartGameFragment restartDialog = RestartGameFragment.newInstance();
+                            restartDialog.show(manager, DIALOG_RESTART_GAME);
+                            mDialog.dismiss();
+                        }
+                        else{
+                           Toast.makeText(getContext(), "Please enter your name before submitting your score.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+        });
+        return mDialog;
     }
 }

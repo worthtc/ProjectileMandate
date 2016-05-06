@@ -120,12 +120,14 @@ public class GameFragment extends Fragment {
                         if( mGameView.isGameOver() && !mFlag){
                             mTimerTask.cancel();
                             boolean isScoreTopTen = false;
+                            int databaseCount = 0;
                             ScoreCursorWrapper cursor = queryScores(null, null);
 
                             //Read all of the rows of the database table and see if the player has one of the top ten scores
                             try{
                                 cursor.moveToFirst();
                                 while(!cursor.isAfterLast()){
+                                    databaseCount++;
                                     if( mGameView.getScore() > cursor.getScore().getScore()){
                                         isScoreTopTen = true;
                                         break;
@@ -136,7 +138,7 @@ public class GameFragment extends Fragment {
                                 cursor.close();
                             }
                             FragmentManager manager = getFragmentManager();
-                            if( isScoreTopTen ) {
+                            if( isScoreTopTen || databaseCount < 10) {
                                 TopScoreFragment dialog = TopScoreFragment.newInstance(mGameView.getScore());
                                 dialog.show(manager, DIALOG_TOP_SCORE);
                             }

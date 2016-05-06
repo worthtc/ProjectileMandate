@@ -190,7 +190,7 @@ public class GameView extends View {
         float a = (float) angle;
         double degree = (float)(a * 180)/3.14;
         float fdegree = (float) degree;
-        Log.d("Angle debug tag"," the angle is " + Float.toString(fdegree));
+        //Log.d("Angle debug tag"," the angle is " + Float.toString(fdegree));
         canvas.save();
         canvas.rotate(fdegree-90, this.getWidth() / 2,mGroundHeight);
         canvas.drawRect((this.getWidth() / 2 - 7), mGroundHeight - 50, (this.getWidth() / 2 + 7), mGroundHeight, mPaint);
