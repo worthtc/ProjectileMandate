@@ -25,12 +25,14 @@ public class OptionsActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment createFragment(){
-        //mColorScheme = getIntent().getBooleanExtra(EXTRA_COLOR_SCHEME, false);
-        //mIsGameHard = getIntent().getBooleanExtra(EXTRA_IS_GAME_HARD, false);
         return OptionsFragment.newInstance(mColorScheme, mIsGameHard);
     }
 
 
+    /**
+     * Sets the current theme depending on what options the user has currently chosen
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState){
         mColorScheme = getIntent().getBooleanExtra(EXTRA_COLOR_SCHEME, false);

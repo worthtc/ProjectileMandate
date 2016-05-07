@@ -109,7 +109,7 @@ public class GameView extends View {
 
         // Hard mode values
         if(mIsGameHard){
-            Log.i(TAG, "Hard mode");
+            //Log.i(TAG, "Hard mode");
             mMissileSpeed = 6;
             mMissileMaxSpeed = 16;
             mMissileFrequency = 100;
@@ -351,7 +351,7 @@ public class GameView extends View {
         for (Iterator<Projectile> iterator = mMissiles.iterator(); iterator.hasNext();) {
             Projectile p = iterator.next();
             if(p.checkArrived()){
-                Log.i(TAG, "Missile ARRIVED");
+                //Log.i(TAG, "Missile ARRIVED");
                 iterator.remove();
                 // **Check Collision with houses here**
                 for(int i = 0; i < houses.length;i++) {

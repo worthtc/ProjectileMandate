@@ -3,6 +3,7 @@ package jollyrogergaming.projectilemandate;
 /**
  * Created by Kelton on 4/10/2016.
  */
+
 public class Projectile {
     private int x_pos;
     private int y_pos;

@@ -85,7 +85,7 @@ public class TopScoreFragment extends DialogFragment implements DialogInterface.
         mDialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(R.string.score_dialog_title)
-                .setPositiveButton(R.string.score_dialog_positive, null)
+                .setPositiveButton(R.string.score_dialog_positive, null) //Declare positive button but do not give it a listener since we do not want to always dismiss the dialog
                 .setNegativeButton(R.string.score_dialog_negative, new DialogInterface.OnClickListener() {
                     @Override
                     /**
@@ -109,24 +109,13 @@ public class TopScoreFragment extends DialogFragment implements DialogInterface.
                 pos_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        /*
-                        if( mUserName != null ) {
-                            Log.d(TAG, "TEST: /" + mUserName.getText().toString() + "/");
-                            Log.d(TAG, ((Boolean) (mUserName.getText().toString() == "")).toString());
-                            Log.d(TAG, ((Boolean) (mUserName.getText().toString() == null)).toString());
-                            Log.d(TAG, ((Boolean) (TextUtils.isEmpty(mUserName.getText()))).toString());
-                            Log.d(TAG, mUserName.toString());
-                            Log.d(TAG, mUserName.getText().toString());
-                        }
-                        else{
-                            Log.d(TAG, "NULL");
-                        }*/
                         if( !TextUtils.isEmpty(mUserName.getText()) && mUserName.getText().toString().length() < MAX_NAME_LENGTH ){
                             ContentValues values = getContentValues(mUserName.getText().toString(), mScore);
                             mDatabase.insert(ScoreDbSchema.ScoreTable.NAME, null, values);
                             mDatabase.close();
                             FragmentManager manager = getFragmentManager();
                             RestartGameFragment restartDialog = RestartGameFragment.newInstance();
+                            restartDialog.setCancelable(false);
                             restartDialog.show(manager, DIALOG_RESTART_GAME);
                             mDialog.dismiss();
                         }

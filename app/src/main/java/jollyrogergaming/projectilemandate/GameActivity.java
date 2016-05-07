@@ -29,29 +29,34 @@ public class GameActivity extends SingleFragmentActivity implements RestartGameF
     private boolean mIsGameHard;
 
 
-    //Hide the action bar since this is the game window
-
 
     @Override
     protected Fragment createFragment(){
+        //Hide the action bar since this is the game window
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
         return GameFragment.newInstance(mColorScheme, mIsGameHard);
     }
 
+    /**
+     * Restart the activity in case the user wants to replay the game
+     */
     @Override
     public void restart(){
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+        Fragment fragment;//= fm.findFragmentById(R.id.fragment_container);
 
         fragment = createFragment();
         fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
     }
 
+    /**
+     * Create the activity, setting the appropriate theme depending on how the user set the options
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState){
-        //setTheme(android.R.style.Theme_Black);
         mColorScheme = getIntent().getBooleanExtra(EXTRA_COLOR_SCHEME, false);
         mIsGameHard = getIntent().getBooleanExtra(EXTRA_IS_GAME_HARD, false);
         if( mColorScheme ){

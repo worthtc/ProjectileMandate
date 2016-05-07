@@ -55,38 +55,6 @@ public class LeaderBoardFragment extends Fragment {
         return fragment;
     }
 
-    /*@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_leader_board);
-        mScores = new ArrayList<>();
-        mDatabase = new ScoreBaseHelper(this).getWritableDatabase();
-
-        ScoreCursorWrapper cursor = queryCrimes(null, null);
-
-        try{
-            cursor.moveToFirst();
-            while(!cursor.isAfterLast()){
-                mScores.add(cursor.getScore());
-                cursor.moveToNext();
-            }
-        } finally{
-            cursor.close();
-        }
-
-        mScoresEmptyList = (TextView) findViewById(R.id.empty_list_view);
-        mScoresRecyclerView = (RecyclerView) findViewById(R.id.score_recycler_view);
-
-        if( mScores.size() == 0){
-            mScoresEmptyList.setVisibility(View.VISIBLE);
-            mScoresRecyclerView.setVisibility(View.GONE);
-        } else{
-            mScoresEmptyList.setVisibility(View.GONE);
-            mScoresRecyclerView.setVisibility(View.VISIBLE);
-        }
-
-    }*/
-
     /**
      * Class to inflate the view for the Fragment, then read in the data from the database, and finally update the user interface
      * @param inflater
@@ -156,7 +124,7 @@ public class LeaderBoardFragment extends Fragment {
     }
 
     /**
-     * Function to run a query on the Scores table
+     * Function to run a query on the Scores table and make the retrieval of the results easier
      * @param whereClause The where selection clause
      * @param whereArgs the arguments for the where clause
      * @return A wrapper for the cursor that makes it easy to retrieve the information from the cursor
@@ -177,36 +145,29 @@ public class LeaderBoardFragment extends Fragment {
 
 
     /**
-     * Update the user interface, creating the adapter if it needs to be created. If there are no scores to be displayed, we display a message telling the user this
-     * Otherwise, we show all of the scores in the database.
+     * Update the user interface, taking all of the scores that were stored in the database and creates a table row for each score. If there are no scores, we show a TextView to the user
      */
     public void updateUI(){
-        /*
-        if( mAdapter == null) {
-            mAdapter = new ScoreAdapter(mScores);
-            //mScoresRecyclerView.setAdapter(mAdapter);
-        }else{
-            mAdapter.notifyDataSetChanged();
-        }*/
-
+        //If we do not have any scores we set the table to be gone and show the TextView. If we do have scores we only show the table
         if( mScores.size() == 0){
             mScoresEmptyList.setVisibility(View.VISIBLE);
             mTable.setVisibility(View.GONE);
-            //mScoresRecyclerView.setVisibility(View.GONE);
         } else{
             mScoresEmptyList.setVisibility(View.GONE);
             mTable.setVisibility(View.VISIBLE);
-            //mScoresRecyclerView.setVisibility(View.VISIBLE);
         }
 
         for( int i = 0; i < mScores.size(); i++){
             addTableRow(mScores.get(i), i);
         }
 
-        //updateSubtitle();
-
     }
 
+    /**
+     * Generate a new row for the table and add it to the table.
+     * @param score - instance of the Score class that holds the data we store in the table
+     * @param position - index of the score we are currently on. Starts at 0 and ends at 9. This is converted to a string for display
+     */
     public void addTableRow( Score score, int position ){
 
         TableRow row = new TableRow(getContext());

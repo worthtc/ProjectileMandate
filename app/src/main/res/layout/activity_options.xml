@@ -12,7 +12,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/color_scheme"/>
+            android:text="@string/color_scheme"
+            android:textSize="@dimen/text_size"/>
         <RadioGroup
             android:id="@+id/color_scheme_group"
             android:layout_width="wrap_content"
@@ -37,7 +38,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/difficulty"/>
+            android:text="@string/difficulty"
+            android:textSize="@dimen/text_size"/>
         <RadioGroup
             android:id="@+id/difficulty_group"
             android:layout_width="match_parent"
@@ -59,15 +61,17 @@
 
     <Button
         android:id="@+id/clear_database_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/clear_database_button"/>
+        android:text="@string/clear_database_button"
+        android:textSize="@dimen/text_size"/>
 
     <Button
         android:id="@+id/confirm_button"
-        android:layout_width="140dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/confirm_button"
+        android:textSize="@dimen/text_size"
         />
 
 </LinearLayout>

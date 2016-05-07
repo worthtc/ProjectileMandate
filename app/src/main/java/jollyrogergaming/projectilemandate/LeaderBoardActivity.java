@@ -13,10 +13,6 @@ import android.support.v4.app.FragmentManager;
  * Simple activity class that creates a new LeaderBoardFragment
  */
 public class LeaderBoardActivity extends SingleFragmentActivity {
-    /*@Override
-    protected int getLayoutResId(){
-        return R.layout.fragment_leader_board;
-    }*/
 
     private boolean mColorScheme; //False with a light color scheme, True with a dark color scheme
     private boolean mIsGameHard;
@@ -30,6 +26,10 @@ public class LeaderBoardActivity extends SingleFragmentActivity {
         return LeaderBoardFragment.newInstance(mColorScheme, mIsGameHard);
     }
 
+    /**
+     * Override onCreate so that we set the correct theme for the options that the user has chosen
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState){
         mColorScheme = getIntent().getBooleanExtra(EXTRA_COLOR_SCHEME, false);

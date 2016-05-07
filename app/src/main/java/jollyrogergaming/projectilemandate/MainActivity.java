@@ -29,7 +29,10 @@ public class MainActivity extends SingleFragmentActivity {
         return MainFragment.newInstance(mColorScheme, mIsGameHard);
     }
 
-
+    /**
+     * Set the current theme depending on the options that the user has currently chosen
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState){
         //setTheme(android.R.style.Theme_Black);
@@ -42,18 +45,8 @@ public class MainActivity extends SingleFragmentActivity {
             setTheme(android.R.style.Theme_Holo_Light_NoActionBar);
         }
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_fragment);
 
         setContentView(getLayoutResId());
-        /*
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
-
-        if(fragment == null){
-            fragment = createFragment();
-            fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
-        }
-        */
     }
 
 }
