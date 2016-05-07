@@ -87,7 +87,7 @@ public class GameView extends View {
         houses[1] = new House(0, 0);
         houses[2] = new House(0, 0);
         houses[3] = new House(0, 0);
-        mMaxProjectiles = 2;
+        mMaxProjectiles = 5;
         mProjectiles = new ArrayList<Projectile>();
         mMissiles = new ArrayList<Projectile>();
         mExplosionRadius = 50;
