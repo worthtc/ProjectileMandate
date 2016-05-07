@@ -3,6 +3,10 @@ package jollyrogergaming.projectilemandate;
 /**
  * Created by Trevor on 5/6/2016.
  */
+
+/**
+ * Class to store a sound for the projectile Mandate Game
+ */
 public class Sound {
     private String mAssetPath;
     private String mName;

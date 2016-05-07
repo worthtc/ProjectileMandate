@@ -7,7 +7,7 @@ Jolly Rodger Gaming:
 Final Project - There's An App For That - Beta Release
 
 Description:
-	This allows a the player to play a game that is reminicent of Atari's Missile Command. The player attempts to save their city ffrom the incoming missiles.
+	Projectile Mandate allows the player to play a game that is reminicent of Atari's Missile Command. The player attempts to save their city ffrom the incoming missiles.
 	The city is composed of four buildings, each of which is destroyed when they are struck by a missile. To shoot down the missiles the player taps the screen to send a missile of their own at the location.
 	The player's missile explodes when it reaches the target location. The explosion expands, destroying any enemy missiles that it touches. The player gets a point for each missile that they shoot down. The top
 	scores are saved into a local database, and the player can view the top ten scores on our leaderboard.

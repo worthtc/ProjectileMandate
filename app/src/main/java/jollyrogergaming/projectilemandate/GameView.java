@@ -74,8 +74,6 @@ public class GameView extends View {
 
     private House[] houses = new House[4];
 
-
-
     int x ;
     int y ;
     private int xpos1,ypos1,xpos2,ypos2;
@@ -95,8 +93,8 @@ public class GameView extends View {
      * Default constructor for GameView
      * @param context
      * @param attrs
-     * @param hard
-     * @param color
+     * @param hard - Are we playing the hard version of the game
+     * @param color - Which color scheme to use. True for dark and false for light
      */
     public GameView(Context context, AttributeSet attrs, boolean hard , boolean color){
         super(context, attrs);
@@ -168,6 +166,11 @@ public class GameView extends View {
 
 
     // Android calls this to redraw the view, after invalidate()
+
+    /**
+     * Handle the main game logic and draw all necessary objects.
+     * @param canvas
+     */
     @Override
     protected void onDraw(Canvas canvas)    {
         super.onDraw(canvas);
@@ -217,7 +220,6 @@ public class GameView extends View {
         }else{
             mFdegree = (float) mDegree;
         }
-        //Log.d("Angle debug tag"," the angle is " + Float.toString(fdegree));
         canvas.save();
         canvas.rotate(mFdegree - 90, this.getWidth() / 2, mGroundHeight);
         canvas.drawRect((this.getWidth() / 2 - 7), mGroundHeight - 50, (this.getWidth() / 2 + 7), mGroundHeight, mPaint);
@@ -277,15 +279,6 @@ public class GameView extends View {
             if(p.checkArrived()){
                 if(p.getExplosionLifetime() <= 0) {
 
-                    /*MediaPlayer mp = new MediaPlayer();
-
-                    try {
-                        mp.setDataSource("app/res/sound/explosion.mp3");
-                        mp.prepare();
-                        mp.start();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
                     iterator.remove();
                 }else{
                     if(p.getExplosionLifetime() >= 60 ){
@@ -385,7 +378,6 @@ public class GameView extends View {
                 //Log.i(TAG, "Missile ARRIVED");
 
                 iterator.remove();
-                // **Check Collision with houses here**
                 for(int i = 0; i < houses.length;i++) {
 
                     if((p.getX_pos() >= houses[i].houseX) && (p.getX_pos() <= (houses[i].houseX + HOUSE_WIDTH))){
@@ -406,7 +398,6 @@ public class GameView extends View {
                 else{
                     mPaint.setColor(0xFF996633);//Light Color Scheme
                 }
-                //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mMissileSize, mPaint);
                 Paint whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 //Set Color Of Enemy Missile Interior
@@ -431,9 +422,7 @@ public class GameView extends View {
         }
         if( !canGameContinue ){
             mIsGameOver = true;
-        } 
-
-
+        }
     }
 
     // Sets the mTouchX and mTouchY whenever a user touches the screen.
@@ -444,8 +433,6 @@ public class GameView extends View {
 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
-
-            action = "ACTION_DOWN";
             mTouchX = (int) current.x;
             mTouchY = (int) current.y;
             int deltaX= (this.getWidth() / 2) - mTouchX ;
@@ -454,17 +441,12 @@ public class GameView extends View {
             float a = (float) angle;
             double mDegree = (float)(a * 180)/3.14;
             //Creates the projectiles
-            Log.d(TAG, "Angle " + mDegree);
             if (mProjectiles.size() < mMaxProjectiles) {
                 int xDest = 0;
                 int yDest = 0;
                 if(mDegree > 180 - mFireAngle || mDegree < -90) {
-                    //xDest = mTouchX;
-                    //yDest = (int)(Math.tan(mDegree)*(mTouchX));
 
                 }else if(mDegree < 0 + mFireAngle){
-                    //xDest = mTouchX;
-                    //yDest = (int)(Math.tan(mDegree)*(mTouchX));
 
                 }else{
                     xDest = mTouchX;
@@ -472,8 +454,6 @@ public class GameView extends View {
                     //This should be bellow the else statement if the above code works
                     mProjectiles.add(new Projectile(this.getWidth() / 2, mGroundHeight, xDest, yDest, mProjectileSpeed));
                 }
-                Log.d(TAG, "X Dest " + xDest);
-                Log.d(TAG, "Y Dest " + yDest);
             }
         }
         return true;
@@ -482,7 +462,7 @@ public class GameView extends View {
 
 
     /**
-     * House object
+     * House class to represent the city the player is protecting.
      */
     private class House {
         private float houseX, houseY;
@@ -516,7 +496,7 @@ public class GameView extends View {
     };
 
     /**
-     *
+     * Return a number between min and max
      * @param min
      * @param max
      * @return
@@ -536,13 +516,18 @@ public class GameView extends View {
     }
 
     /**
-     * gets the score
+     * Getter for score
      * @return
      */
     public int getScore(){
         return mScore;
     }
 
+    /**
+     * Load a sound into the sound pool
+     * @param sound - the sound to grab
+     * @throws IOException - if the sound does not exist
+     */
     private void load( Sound sound ) throws IOException{
         AssetFileDescriptor afd = mAssets.openFd(sound.getAssetPath());
         Log.d(TAG, "GameView: " + sound.getAssetPath());
@@ -551,6 +536,10 @@ public class GameView extends View {
         sound.setSoundId(soundId);
     }
 
+    /**
+     * Plays the specified sound
+     * @param sound - the sound to be played
+     */
     public void play(Sound sound){
         Integer soundId = sound.getSoundId();
         if( soundId == null ){

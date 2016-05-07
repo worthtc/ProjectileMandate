@@ -43,7 +43,7 @@ public class Projectile {
     }
 
     /**
-     * calculates the new position for the projectile
+     * Calculates the new position for the projectile
      */
     public void calcNewPos(){
         int deltaX = destx - x_pos;
@@ -59,8 +59,8 @@ public class Projectile {
     }
 
     /**
-     * check if the projectile has arrived
-     * @return
+     * Check if the projectile has arrived
+     * @return true if it has arrived
      */
     public boolean checkArrived(){
         if(Math.abs(x_pos-destx) < speed && Math.abs(y_pos-desty) < speed){
@@ -71,14 +71,12 @@ public class Projectile {
     }
 
     /**
-     * getters for projectile
+     * Getters for projectile
      * @return
      */
     public int getX_pos() {
         return x_pos;
     }
-
-
 
     public int getY_pos() {
         return y_pos;
@@ -101,8 +99,8 @@ public class Projectile {
     }
 
     /**
-     * setter for explosion lifetime
-     * @param explosionLifetime
+     * Setter for explosion lifetime
+     * @param explosionLifetime - what to set the explosion lifetime
      */
     public void setExplosionLifetime(int explosionLifetime) {
         this.explosionLifetime = explosionLifetime;
