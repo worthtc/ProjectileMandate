@@ -46,11 +46,9 @@ public class MainFragment extends Fragment {
     @Override
     //protected void onCreate(Bundle savedInstanceState) {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ){
-
         mColorScheme = getArguments().getBoolean(KEY_COLOR_SCHEMA);
         mIsGameHard = getArguments().getBoolean(KEY_IS_GAME_HARD);
 
-        //setContentView(R.layout.activity_main);
         View view = inflater.inflate(R.layout.activity_main, container, false);
 
         mPlayButton = (Button) view.findViewById(R.id.play_button);
@@ -60,7 +58,7 @@ public class MainFragment extends Fragment {
                 Intent i = new Intent(getActivity(), GameActivity.class);
                 i.putExtra(EXTRA_COLOR_SCHEME, mColorScheme);
                 i.putExtra(EXTRA_IS_GAME_HARD, mIsGameHard);
-                startActivityForResult(i, REQUEST_CODE_GAME);
+                startActivity(i);
             }
         });
 
@@ -82,7 +80,7 @@ public class MainFragment extends Fragment {
                 Intent i = new Intent(getActivity(), LeaderBoardActivity.class);
                 i.putExtra(EXTRA_COLOR_SCHEME, mColorScheme);
                 i.putExtra(EXTRA_IS_GAME_HARD, mIsGameHard);
-                startActivityForResult(i, REQUEST_CODE_LEADERBOARD);
+                startActivity(i);
             }
         });
 
@@ -99,11 +97,13 @@ public class MainFragment extends Fragment {
             mIsGameHard = savedInstanceState.getBoolean(KEY_IS_GAME_HARD);
         }
 
-        getActivity().setTheme(android.R.style.Theme_Black);
-
         return view;
     }
 
+    /**
+     * Save the current instance state in case the user rotates the screen
+     * @param savedInstanceState
+     */
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
@@ -113,7 +113,7 @@ public class MainFragment extends Fragment {
 
     /**
      * Once we return from an activity, we figure out what activity we returned from, and if it is the options activity, we
-     * save the options that hte user chose.
+     * save the options that the user chose.
      * @param requestCode The code corresponding to which activity we returned from
      * @param resultCode Whether we got a correct result or not
      * @param data The data that was returned
@@ -132,12 +132,6 @@ public class MainFragment extends Fragment {
             //Don't think that this is considered good code, but oh well
             getActivity().finish();
             startActivity(i);
-        }
-        else if( requestCode == REQUEST_CODE_LEADERBOARD){
-
-        }
-        else if( requestCode == REQUEST_CODE_GAME){
-
         }
 
     }

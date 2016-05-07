@@ -68,10 +68,6 @@ public class GameFragment extends Fragment {
         return fragment;
     }
 
-    public GameFragment(){
-        // Required empty public constructor
-    }
-
     /**
      * onCreateView method to set the on click listeners
      * @param inflater
@@ -80,12 +76,10 @@ public class GameFragment extends Fragment {
      * @return
      */
     @Override
-   // protected void onCreate(Bundle savedInstanceState) {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ){
 
         View view = inflater.inflate(R.layout.activity_game, container, false);
         mDatabase = new ScoreBaseHelper(getContext()).getReadableDatabase();
-        //setContentView(R.layout.activity_game);
         mFlag = false;
         mColorScheme = getArguments().getBoolean(KEY_COLOR_SCHEMA);
         mIsGameHard = getArguments().getBoolean(KEY_IS_GAME_HARD);
@@ -95,7 +89,7 @@ public class GameFragment extends Fragment {
         //Main screen
         FrameLayout mainView = (FrameLayout) view.findViewById(R.id.game_view);
 
-
+        //Create score text view to display the current score to the user
         mScoreView = new TextView(getActivity());
         mScoreView.setGravity(Gravity.CENTER_HORIZONTAL);
         mScoreView.setTextSize(22);
@@ -115,12 +109,9 @@ public class GameFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState){
-        super.onSaveInstanceState(savedInstanceState);
-
-    }
-
+    /**
+     * When the activity is resumed, we start a timer task that runs the Projectile Mandate game to completion.
+     */
     @Override
     public void onResume() {
         // Create the timer and its task.
@@ -186,7 +177,12 @@ public class GameFragment extends Fragment {
         super.onResume();
     }
 
-
+    /**
+     * Function to run a query on the Scores table and make the retrieval of the results easier
+     * @param whereClause The where selection clause
+     * @param whereArgs the arguments for the where clause
+     * @return A wrapper for the cursor that makes it easy to retrieve the information from the cursor
+     */
     private ScoreCursorWrapper queryScores( String whereClause, String[] whereArgs){
         Cursor cursor = mDatabase.query(
                 ScoreDbSchema.ScoreTable.NAME,

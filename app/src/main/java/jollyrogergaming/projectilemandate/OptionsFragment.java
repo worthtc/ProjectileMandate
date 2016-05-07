@@ -118,11 +118,9 @@ public class OptionsFragment extends Fragment{
         });
 
         if( mColorScheme ){
-            mColorSchemeGroup.clearCheck();
             mColorSchemeGroup.check(R.id.dark_button);
         }
         else {
-            mColorSchemeGroup.clearCheck();
             mColorSchemeGroup.check(R.id.light_button);
         }
 
@@ -132,7 +130,7 @@ public class OptionsFragment extends Fragment{
         else {
             mDifficultyGroup.check(R.id.easy_button);
         }
-
+        //If we have a saved instance state, then we want to restore the saved data. Then we store it as a result in case the user then hits the back or up button
         if( savedInstanceState != null){
             mColorScheme = savedInstanceState.getBoolean(KEY_COLOR_SCHEMA);
             mIsGameHard = savedInstanceState.getBoolean(KEY_IS_GAME_HARD);
@@ -143,12 +141,20 @@ public class OptionsFragment extends Fragment{
         return view;
     }
 
+    /**
+     * Store the current state of the options set by the user into the activity's result
+     */
     public void storeResult(){
         Intent data = getActivity().getIntent();
         data.putExtra(EXTRA_COLOR_SCHEME, mColorScheme);
         data.putExtra(EXTRA_IS_GAME_HARD, mIsGameHard);
         getActivity().setResult(getActivity().RESULT_OK, data);
     }
+
+    /**
+     * Store the current state of the fragment if the user rotates the screen
+     * @param savedInstanceState
+     */
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
@@ -156,7 +162,9 @@ public class OptionsFragment extends Fragment{
         savedInstanceState.putBoolean(KEY_IS_GAME_HARD, mIsGameHard);
     }
 
-
+    /**
+     * Closes the database when the gragment is destroyed
+     */
     @Override
     public void onDestroy(){
         super.onDestroy();
