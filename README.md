@@ -30,4 +30,6 @@ Compilation:
 	Our program does not require any special compilation instructions and should compile normally in Android Studio. 
 
 Bugs:
-	The only current issue with the application is that the game screen does not display as nice as we would have liked on low resolution screens.
+	The only current issue with the application is that the game screen does not display as nice as we would have liked on low resolution screens. 
+	The addition of Sound to our app is one of the later things that we did, so it is not as detailed as we would have wished. 
+	It currently only plays a sound when one of your missiles explodes or an enemy missile hits the ground. Also it was rather loud when I tested it so it might be helpful to keep the volume low, especially if you are using headphones.

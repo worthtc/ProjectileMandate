@@ -34,7 +34,7 @@ public class GameView extends View {
     private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private static final String TAG = "GameActivity";
     private static final String SOUNDS_FOLDER = "sounds";
-    private static final int MAX_SOUNDS = 5;
+    private static final int MAX_SOUNDS = 10;
 
     private int mTouchX;
     private int mTouchY;
@@ -303,9 +303,11 @@ public class GameView extends View {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }*/
-                    play(mSound);
                     iterator.remove();
                 }else{
+                    if(p.getExplosionLifetime() >= 60 ){
+                        play(mSound);
+                    }
                     int explosionSize = mExplosionRadius * (60 - p.getExplosionLifetime()) / 60;
                     //Set Color of Explosion Exterior
                     if( mColorScheme ) {
@@ -394,6 +396,7 @@ public class GameView extends View {
         for (Iterator<Projectile> iterator = mMissiles.iterator(); iterator.hasNext();) {
             Projectile p = iterator.next();
             if(p.checkArrived()){
+                play(mSound);
                 //Log.i(TAG, "Missile ARRIVED");
                 iterator.remove();
                 // **Check Collision with houses here**
