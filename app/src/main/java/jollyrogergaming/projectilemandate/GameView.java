@@ -49,6 +49,8 @@ public class GameView extends View {
     private boolean mColorScheme;
     private int mMisileSpeedUpTime;
     private float mFdegree;
+    private double mDegree;
+    private int mFireAngle;
 
     private boolean mIsGameOver;
 
@@ -102,7 +104,8 @@ public class GameView extends View {
         mProjectileSpeed = 10;
         mScore = 0;
         mMisileSpeedUpTime = 1000;
-        float mFdegree = 0;
+        mFdegree = 0;
+        mFireAngle = 15;
 
         // Hard mode values
         if(mIsGameHard){
@@ -190,9 +193,14 @@ public class GameView extends View {
         int deltaY= mGroundHeight - mTouchY  ;
         double angle = Math.atan2(deltaY, deltaX);
         float a = (float) angle;
-        double degree = (float)(a * 180)/3.14;
-        if(mTouchY < mGroundHeight) {
-            mFdegree = (float) degree;
+        double mDegree = (float)(a * 180)/3.14;
+        //Log.d(TAG, "The angle is " + Double.toString(mDegree));
+        if(mDegree > 180 - mFireAngle || mDegree < -90) {
+            mFdegree = (float) 180 - mFireAngle;
+        }else if(mDegree < 0 + mFireAngle){
+            mFdegree = (float) 0 + mFireAngle;
+        }else{
+            mFdegree = (float) mDegree;
         }
         //Log.d("Angle debug tag"," the angle is " + Float.toString(fdegree));
         canvas.save();
@@ -416,14 +424,39 @@ public class GameView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         PointF current = new PointF(event.getX(), event.getY());
         String action = "";
+
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+
+
             action = "ACTION_DOWN";
             mTouchX = (int) current.x;
             mTouchY = (int) current.y;
-            //Log.i(TAG, action + " at x =" + current.x + ", y =" + current.y);
-            //Log.i(TAG, "x = " + mTouchX + ", y = " + mTouchY);
-            if (mProjectiles.size() < mMaxProjectiles && mTouchY < mGroundHeight) {
-                mProjectiles.add(new Projectile(this.getWidth() / 2, mGroundHeight, mTouchX, mTouchY, mProjectileSpeed));
+            int deltaX= (this.getWidth() / 2) - mTouchX ;
+            int deltaY= mGroundHeight - mTouchY  ;
+            double angle = Math.atan2(deltaY, deltaX);
+            float a = (float) angle;
+            double mDegree = (float)(a * 180)/3.14;
+            //Creates the projectiles
+            Log.d(TAG, "Angle " + mDegree);
+            if (mProjectiles.size() < mMaxProjectiles) {
+                int xDest = 0;
+                int yDest = 0;
+                if(mDegree > 180 - mFireAngle || mDegree < -90) {
+                    //xDest = mTouchX;
+                    //yDest = (int)(Math.tan(mDegree)*(mTouchX));
+
+                }else if(mDegree < 0 + mFireAngle){
+                    //xDest = mTouchX;
+                    //yDest = (int)(Math.tan(mDegree)*(mTouchX));
+
+                }else{
+                    xDest = mTouchX;
+                    yDest = mTouchY;
+                    //This should be bellow the else statement if the above code works
+                    mProjectiles.add(new Projectile(this.getWidth() / 2, mGroundHeight, xDest, yDest, mProjectileSpeed));
+                }
+                Log.d(TAG, "X Dest " + xDest);
+                Log.d(TAG, "Y Dest " + yDest);
             }
         }
         return true;
