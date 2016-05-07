@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.media.MediaPlayer;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -130,7 +132,7 @@ public class GameView extends View {
 
     }
 
-    public void createMissile(){
+    public void createMissile() {
         Random rand = new Random();
         int n = rand.nextInt(1000);
         Missile update_missile = new Missile(n,0,32,32,10);
@@ -261,6 +263,16 @@ public class GameView extends View {
             Projectile p = iterator.next();
             if(p.checkArrived()){
                 if(p.getExplosionLifetime() <= 0) {
+
+                    MediaPlayer mp = new MediaPlayer();
+
+                    try {
+                        mp.setDataSource("app/res/sound/explosion.mp3");
+                        mp.prepare();
+                        mp.start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     iterator.remove();
                 }else{
                     int explosionSize = mExplosionRadius * (60 - p.getExplosionLifetime()) / 60;
