@@ -127,6 +127,7 @@ public class GameFragment extends Fragment {
                     public void run() {
                         if( mGameView.isGameOver() && !mFlag){
                             mTimerTask.cancel();
+                            mGameView.release();
                             boolean isScoreTopTen = false;
                             int databaseCount = 0;
                             ScoreCursorWrapper cursor = queryScores(null, null);
@@ -195,6 +196,12 @@ public class GameFragment extends Fragment {
         );
 
         return new ScoreCursorWrapper(cursor);
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        mGameView.release();
     }
 
 }
