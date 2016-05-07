@@ -41,7 +41,7 @@ public class RestartGameFragment extends DialogFragment {
     public Dialog onCreateDialog( Bundle savedInstanceState ){
 
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_restart_game, null);
-        return new AlertDialog.Builder(getActivity())
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(R.string.restart_game_title)
                 .setPositiveButton(R.string.restart_game_dialog_positive, new DialogInterface.OnClickListener() {
@@ -57,6 +57,7 @@ public class RestartGameFragment extends DialogFragment {
                     }
                 })
                 .create();
+        return dialog;
     }
 
 }

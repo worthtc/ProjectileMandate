@@ -9,7 +9,9 @@
         android:id="@+id/empty_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/empty_list"/>
+        android:text="@string/empty_list"
+        android:gravity="center"
+        android:textSize="@dimen/text_size"/>
 <!--
     <android.support.v7.widget.RecyclerView
         android:id="@+id/score_recycler_view"

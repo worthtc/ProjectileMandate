@@ -157,10 +157,12 @@ public class GameFragment extends Fragment {
                             FragmentManager manager = getFragmentManager();
                             if( isScoreTopTen || databaseCount < 10) {
                                 TopScoreFragment dialog = TopScoreFragment.newInstance(mGameView.getScore());
+                                dialog.setCancelable(false);
                                 dialog.show(manager, DIALOG_TOP_SCORE);
                             }
                             else{
                                 RestartGameFragment dialog = RestartGameFragment.newInstance();
+                                dialog.setCancelable(false);
                                 dialog.show(manager, DIALOG_RESTART_GAME);
                             }
                             mFlag = true;

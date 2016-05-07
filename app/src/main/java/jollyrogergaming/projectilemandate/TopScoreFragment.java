@@ -127,6 +127,7 @@ public class TopScoreFragment extends DialogFragment implements DialogInterface.
                             mDatabase.close();
                             FragmentManager manager = getFragmentManager();
                             RestartGameFragment restartDialog = RestartGameFragment.newInstance();
+                            restartDialog.setCancelable(false);
                             restartDialog.show(manager, DIALOG_RESTART_GAME);
                             mDialog.dismiss();
                         }
