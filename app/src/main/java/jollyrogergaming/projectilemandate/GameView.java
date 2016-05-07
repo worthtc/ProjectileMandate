@@ -1,11 +1,15 @@
 package jollyrogergaming.projectilemandate;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -17,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -28,6 +33,9 @@ public class GameView extends View {
 
     private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private static final String TAG = "GameActivity";
+    private static final String SOUNDS_FOLDER = "sounds";
+    private static final int MAX_SOUNDS = 5;
+
     private int mTouchX;
     private int mTouchY;
     private ArrayList<Projectile> mProjectiles;
@@ -53,6 +61,9 @@ public class GameView extends View {
     private float mFdegree;
     private double mDegree;
     private int mFireAngle;
+    private Sound mSound;
+    private SoundPool mSoundPool;
+    private AssetManager mAssets;
 
     private boolean mIsGameOver;
 
@@ -127,7 +138,26 @@ public class GameView extends View {
             moveMissile();
         }
 
-
+        mAssets = context.getAssets();
+        mSoundPool = new SoundPool(MAX_SOUNDS, AudioManager.STREAM_MUSIC, 0); //Depreciated but needed for API 16
+        String[] soundNames;
+        try{
+            soundNames = mAssets.list(SOUNDS_FOLDER);
+        } catch (IOException e){
+            Log.e(TAG, "Could not list assets", e);
+            return;
+        }
+        for( String filename : soundNames ){
+            try{
+                String assetPath = SOUNDS_FOLDER + "/" + filename;
+                Log.d(TAG, "GameView: " + filename);
+                mSound = new Sound(assetPath);
+                Log.d(TAG, "GameView: " + mSound);
+                load(mSound);
+            } catch (IOException e){
+                Log.e(TAG, "Could not load sound", e);
+            }
+        }
 
 
     }
@@ -264,7 +294,7 @@ public class GameView extends View {
             if(p.checkArrived()){
                 if(p.getExplosionLifetime() <= 0) {
 
-                    MediaPlayer mp = new MediaPlayer();
+                    /*MediaPlayer mp = new MediaPlayer();
 
                     try {
                         mp.setDataSource("app/res/sound/explosion.mp3");
@@ -272,7 +302,8 @@ public class GameView extends View {
                         mp.start();
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                    }*/
+                    play(mSound);
                     iterator.remove();
                 }else{
                     int explosionSize = mExplosionRadius * (60 - p.getExplosionLifetime()) / 60;
@@ -543,6 +574,22 @@ public class GameView extends View {
 
     public int getScore(){
         return mScore;
+    }
+
+    private void load( Sound sound ) throws IOException{
+        AssetFileDescriptor afd = mAssets.openFd(sound.getAssetPath());
+        Log.d(TAG, "GameView: " + sound.getAssetPath());
+        Log.d(TAG, "GameView: " + afd);
+        int soundId = mSoundPool.load(afd, 1);
+        sound.setSoundId(soundId);
+    }
+
+    public void play(Sound sound){
+        Integer soundId = sound.getSoundId();
+        if( soundId == null ){
+            return;
+        }
+        mSoundPool.play( soundId, 1.0f, 1.0f, 1, 0, 1.0f);
     }
 
 
