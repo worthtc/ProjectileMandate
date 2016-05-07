@@ -36,7 +36,9 @@ import jollyrogergaming.projectilemandate.database.ScoreDbSchema;
  * Created by Trevor on 4/10/2016.
  */
 public class GameFragment extends Fragment {
-
+    /**
+     * varibles used by the Game fragment class
+     */
     private TextView mTestTextOne;
     private TextView mTestTextTwo;
     private boolean mColorScheme; //False with a light color scheme, True with a dark color scheme
@@ -52,7 +54,9 @@ public class GameFragment extends Fragment {
     private static final String DIALOG_TOP_SCORE = "DialogTopScore";
     private static final String DIALOG_RESTART_GAME = "DialogRestartGame";
     private static final String TAG = "GameActivity";
-
+    /**
+     * objects used by the Game fragment class
+     */
     GameView mGameView;
     Timer mTimer;
     TimerTask mTimerTask;

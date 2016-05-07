@@ -2,9 +2,13 @@ package jollyrogergaming.projectilemandate;
 
 /**
  * Created by Kelton on 4/10/2016.
+ * simple class that creates and modifies the projectile on the screen
  */
 
 public class Projectile {
+    /**
+     * varibles used for the projectile class
+     */
     private int x_pos;
     private int y_pos;
     private int speed;
@@ -21,6 +25,14 @@ public class Projectile {
         explosionLifetime = 60;
     }
 
+    /**
+     * Constructor used for projectile
+     * @param x
+     * @param y
+     * @param x2
+     * @param y2
+     * @param s
+     */
     public Projectile(int x, int y, int x2, int y2, int s){
         speed = s;
         x_pos = x;
@@ -30,6 +42,9 @@ public class Projectile {
         explosionLifetime = 60;
     }
 
+    /**
+     * calculates the new position for the projectile
+     */
     public void calcNewPos(){
         int deltaX = destx - x_pos;
         int deltaY = desty - y_pos;
@@ -43,6 +58,10 @@ public class Projectile {
         y_pos += dy;
     }
 
+    /**
+     * check if the projectile has arrived
+     * @return
+     */
     public boolean checkArrived(){
         if(Math.abs(x_pos-destx) < speed && Math.abs(y_pos-desty) < speed){
             return true;
@@ -51,42 +70,40 @@ public class Projectile {
         }
     }
 
+    /**
+     * getters for projectile
+     * @return
+     */
     public int getX_pos() {
         return x_pos;
     }
 
-    public void setX_pos(int x_pos) {
-        this.x_pos = x_pos;
-    }
+
 
     public int getY_pos() {
         return y_pos;
     }
 
-    public void setY_pos(int y_pos) {
-        this.y_pos = y_pos;
-    }
 
     public int getDestx() {
         return destx;
     }
 
-    public void setDestx(int destx) {
-        this.destx = destx;
-    }
+
 
     public int getDesty() {
         return desty;
     }
 
-    public void setDesty(int desty) {
-        this.desty = desty;
-    }
 
     public int getExplosionLifetime() {
         return explosionLifetime;
     }
 
+    /**
+     * setter for explosion lifetime
+     * @param explosionLifetime
+     */
     public void setExplosionLifetime(int explosionLifetime) {
         this.explosionLifetime = explosionLifetime;
     }

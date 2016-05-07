@@ -18,9 +18,12 @@ import jollyrogergaming.projectilemandate.database.ScoreDbSchema;
 
 /**
  * Created by Trevor on 4/10/2016.
+ *
  */
 public class OptionsFragment extends Fragment{
-
+    /**
+     * options used through out the option fragments class
+     */
     private Button mLightButton;
     private Button mDarkButton;
     private Button mEasyButton;

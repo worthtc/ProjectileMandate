@@ -14,6 +14,9 @@ import android.widget.Button;
  * Created by Trevor on 4/10/2016.
  */
 public class MainFragment extends Fragment {
+    /**
+     * varibles used through out the Mainfragment
+     */
     private boolean mColorScheme; //False with a light color scheme, True with a dark color scheme
     private boolean mIsGameHard;
     private Button mPlayButton;
@@ -25,8 +28,7 @@ public class MainFragment extends Fragment {
     public static final String KEY_COLOR_SCHEMA = "color_scheme";
     public static final String KEY_IS_GAME_HARD = "is_game_easy";
     public static final String TAG = "MainFragment";
-    private static final int REQUEST_CODE_LEADERBOARD = 2;
-    private static final int REQUEST_CODE_GAME = 1;
+
     private static final int REQUEST_CODE_OPTIONS = 0;
 
     public static MainFragment newInstance(boolean colorScheme, boolean isGameHard){

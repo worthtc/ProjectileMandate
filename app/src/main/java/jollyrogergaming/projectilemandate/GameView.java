@@ -25,7 +25,9 @@ import java.util.Random;
  * Created by Kelton on 4/9/2016.
  */
 public class GameView extends View {
-
+    /**
+     * variables used for Game view
+     */
     private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private static final String TAG = "GameActivity";
     private int mTouchX;
@@ -51,7 +53,6 @@ public class GameView extends View {
     private boolean mColorScheme;
     private int mMisileSpeedUpTime;
     private float mFdegree;
-    private double mDegree;
     private int mFireAngle;
 
     private boolean mIsGameOver;
@@ -69,18 +70,23 @@ public class GameView extends View {
     private int xpos1,ypos1,xpos2,ypos2;
 
     GameActivity obj2;
-    private ArrayList<Missile> missile = new ArrayList<>();
-    private ArrayList<Missile> missilemove = new ArrayList<>();
-    private ArrayList<Missile> missilen = new ArrayList<>();
 
+    /**
+     * Defualt constructor
+     * @param context
+     */
     public GameView(Context context){
         this(context, null, false, false);
-        for(int i = 0; i < 100 ; i++) {
-            createMissile();
-            moveMissile();
-        }
+
     }
 
+    /**
+     * Default constructor for GameView
+     * @param context
+     * @param attrs
+     * @param hard
+     * @param color
+     */
     public GameView(Context context, AttributeSet attrs, boolean hard , boolean color){
         super(context, attrs);
         mIsGameHard = hard;
@@ -122,25 +128,14 @@ public class GameView extends View {
         // For the toast, can remove later
         mContext = context;
 
-        for(int i = 0; i < 100 ; i++) {
-            createMissile();
-            moveMissile();
-        }
+
 
 
 
 
     }
 
-    public void createMissile() {
-        Random rand = new Random();
-        int n = rand.nextInt(1000);
-        Missile update_missile = new Missile(n,0,32,32,10);
-        missile.add(update_missile);
 
-        Missile new_missile = new Missile(n,1010,32,32,10);
-        missilemove.add(new_missile);
-    }
 
     // Android calls this to redraw the view, after invalidate()
     @Override
@@ -160,7 +155,6 @@ public class GameView extends View {
         houses[2].setHouseX((mScreenWidth / 20) * 6 + HOUSE_WIDTH * 2);
         houses[3].setHouseX((mScreenWidth / 20) * 7 + HOUSE_WIDTH * 3);
 
-        //Log.d(TAG, "onDraw(); X = " + mX + " Y = " + mY);
 
         //Draw background, feel free to delete or change color. Here just in case we want a background color.
         if( mColorScheme ) {
@@ -169,17 +163,6 @@ public class GameView extends View {
         else{
             canvas.drawARGB(0xFF, 0x99, 0xCC, 0xFF);//Light Color Scheme
         }
-        //Draw a circle at user touch
-//        mPaint.setColor(0xFFFFFFFF);
-//        canvas.drawCircle(mTouchX, mTouchY, 50, mPaint);
-
-        ;
-
-
-
-
-
-
 
 
         mPaint.setColor(0xFF00FFFF);
@@ -196,7 +179,7 @@ public class GameView extends View {
         double angle = Math.atan2(deltaY, deltaX);
         float a = (float) angle;
         double mDegree = (float)(a * 180)/3.14;
-        //Log.d(TAG, "The angle is " + Double.toString(mDegree));
+
         if(mDegree > 180 - mFireAngle || mDegree < -90) {
             mFdegree = (float) 180 - mFireAngle;
         }else if(mDegree < 0 + mFireAngle){
@@ -322,7 +305,7 @@ public class GameView extends View {
                 else{
                     mPaint.setColor(0xFF00FF00);//Light Color Scheme
                 }
-                //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
+
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mProjectileSize, mPaint);
                 //Set Color of Player Projectile Interior
                 if( mColorScheme ) {
@@ -331,10 +314,10 @@ public class GameView extends View {
                 else{
                     mPaint.setColor(0xFF000000);//Light Color Scheme
                 }
-                //canvas.drawRect(p.getX_pos(), p.getY_pos(), 64, 64, mPaint);
+
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mProjectileSize/2, mPaint);
                 p.calcNewPos();
-                //Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
+
             }
         }
 
@@ -363,7 +346,7 @@ public class GameView extends View {
         for (Iterator<Projectile> iterator = mMissiles.iterator(); iterator.hasNext();) {
             Projectile p = iterator.next();
             if(p.checkArrived()){
-                //Log.i(TAG, "Missile ARRIVED");
+
                 iterator.remove();
                 // **Check Collision with houses here**
                 for(int i = 0; i < houses.length;i++) {
@@ -398,7 +381,7 @@ public class GameView extends View {
                 }
                 canvas.drawCircle(p.getX_pos(), p.getY_pos(), mMissileSize-mMissileSize/3, whitePaint);
                 p.calcNewPos();
-                //Log.i(TAG, "x = " + p.getX_pos() + ", y = " + p.getY_pos());
+
             }
         }
 
@@ -413,24 +396,9 @@ public class GameView extends View {
             mIsGameOver = true;
         } 
 
-        //Log.d(TAG, "onSensorChanged() " + mLightLevel);
-    }
-    public void moveMissile() {
-        for(Missile m : missile) {
-            xpos1 += m.getX_pos();
-            ypos1 += m.getY_pos();
-        }
-        for (Missile m2 : missilemove){
-            xpos2 += m2.getX_pos();
-            ypos2 += m2.getY_pos();
-        }
-        x = xpos2 - xpos1;
-        y = ypos2 ;
-        int totalDis = ((x*x)+ (y*y))^(1/2);
-        Missile newM = new Missile(x,y,32,32,10);
-        missilen.add(newM);
 
     }
+
     // Sets the mTouchX and mTouchY whenever a user touches the screen.
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -475,7 +443,10 @@ public class GameView extends View {
     }
 
 
-    // House object
+
+    /**
+     * House object
+     */
     private class House {
         private float houseX, houseY;
         private boolean active;
@@ -507,29 +478,11 @@ public class GameView extends View {
         }
     };
 
-    /*
-    public void moveMissile() {
-        Random rand = new Random();
-        int n = rand.nextInt(1000);
-
-
-        x = n;
-        y = n;
-
-        totalDis = Math.sqrt((x * x)+(y*y));
-        missilePos.x += totalDis;
-        missilePos.y = y ;
-
-
-    }
-    public void createMissile(){
-        missilePos = new PointF(x,y);
-        n = rand.nextInt(1000);
-        missilePos.x = n;
-        missilePos.y = 0;
-
-
-    }
+    /**
+     *
+     * @param min
+     * @param max
+     * @return
      */
     int randomWithRange(int min, int max)
     {
@@ -537,10 +490,18 @@ public class GameView extends View {
         return (int)(Math.random() * range) + min;
     }
 
+    /**
+     * Checks to see if game is over
+     * @return
+     */
     public boolean isGameOver(){
         return mIsGameOver;
     }
 
+    /**
+     * gets the score
+     * @return
+     */
     public int getScore(){
         return mScore;
     }

@@ -16,16 +16,24 @@ import android.support.v7.app.AppCompatActivity;
 public abstract class SingleFragmentActivity extends AppCompatActivity {
     protected abstract Fragment createFragment();
 
+    /**
+     *
+     * @return
+     */
     @LayoutRes
     protected int getLayoutResId(){
         return R.layout.activity_fragment;
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState){
-        //setTheme(android.R.style.Theme_Black);
+
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_fragment);
+
 
         setContentView(getLayoutResId());
 
