@@ -18,8 +18,7 @@ public class LeaderBoardActivity extends SingleFragmentActivity {
     private boolean mIsGameHard;
     public static final String EXTRA_COLOR_SCHEME = "jollyrogergaming.projectilemandate.color_scheme";
     public static final String EXTRA_IS_GAME_HARD = "jollyrogergaming.projectilemandate.is_game_easy";
-    public static final String KEY_COLOR_SCHEMA = "color_scheme";
-    public static final String KEY_IS_GAME_HARD = "is_game_easy";
+
 
     @Override
     protected Fragment createFragment(){

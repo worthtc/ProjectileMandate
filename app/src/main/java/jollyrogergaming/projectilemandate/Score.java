@@ -11,23 +11,32 @@ public class Score {
     private int mScore;
     private String mUser;
 
+    /**
+     * default constructor for score
+     * @param score
+     * @param user
+     */
     public Score(int score, String user) {
         mScore = score;
         mUser = user;
     }
 
+    /**
+     * getters used by the class
+     * @return
+     */
     public int getScore() {
         return mScore;
-    }
-
-    public void setScore(int score) {
-        mScore = score;
     }
 
     public String getUser() {
         return mUser;
     }
 
+    /**
+     * setter for setting the user
+     * @param user
+     */
     public void setUser(String user) {
         mUser = user;
     }
