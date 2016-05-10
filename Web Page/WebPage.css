@@ -27,3 +27,26 @@ h1 {
     width: 75%;
     height: 1825px;
 }
+
+
+img {
+	width:100%;
+	height:auto;
+}
+
+table{
+	margin-right: 10%;
+	margin-left: 10%;
+}
+
+.header{
+	text-decoration: underline;
+	font-size: 200%;
+	
+}
+
+#description{
+	margin-right: 10%;
+	margin-left: 10%;
+	margin-bottom: 5%;
+}
